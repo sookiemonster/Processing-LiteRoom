@@ -1,6 +1,6 @@
 # APCSFinalProject
 Our prototype document.  
-[ProcessingRoom: The Image Manipulator Program](https://docs.google.com/document/d/1loHmnPx4b_RIys0d_C-07HIXoZBVQuqASQAtE_pxfTs/edit?usp=sharing)
+[LiteRoom: The Image Manipulator Program](https://docs.google.com/document/d/1loHmnPx4b_RIys0d_C-07HIXoZBVQuqASQAtE_pxfTs/edit?usp=sharing)
 
 **1.** Yagami Lite
 
