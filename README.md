@@ -2,7 +2,7 @@
 Our prototype document.  
 [ProcessingRoom: The Image Manipulator Program](https://docs.google.com/document/d/1loHmnPx4b_RIys0d_C-07HIXoZBVQuqASQAtE_pxfTs/edit?usp=sharing)
 
-**1.** (GROUP NAME)
+**1.** Yagami Lite
 
 **2.** Daniel Sooknanan & Jonathan Wu
 
