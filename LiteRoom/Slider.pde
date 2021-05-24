@@ -1,4 +1,4 @@
-abstract class Slider implements Interactable {
+public abstract class Slider implements Interactable {
   
   protected final color primary = color(0, 0, 100);
   private final int w = 150, h = 5, 
@@ -69,7 +69,7 @@ abstract class Slider implements Interactable {
     return (px >= x1 && py >= y1 && px <= x2 && py <= y2);
   }
   
-  public int getValue() {
+  public int getPosition() {
     return position;
   }
   
@@ -77,7 +77,5 @@ abstract class Slider implements Interactable {
     return pressed;
   }
   
-  public void apply(PImage src, float x, float y) {
-    
-  }
+  public abstract color apply(color c);
 }

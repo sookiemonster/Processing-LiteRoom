@@ -4,8 +4,13 @@ public class BrightnessSlider extends Slider {
     super(x, y, "Brightness");
   }
   
-  public void apply(PImage src, float x, float y) {
-    
+  private int adjustment() {
+    return this.getPosition() - 50;
+  }
+  
+  public color apply(color c) {
+    colorMode(HSB, 360, 100, 100);
+    return color(hue(c), saturation(c), constrain(brightness(c) + this.adjustment(), 0, 100));
   }
   
 }
