@@ -21,6 +21,10 @@ void setup() {
   elements.add(new BrightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 30));
   adjustments.add((Slider)elements.get(0));
   
+  elements.add(new TemperatureSlider(right.get(1).getX() + 100, right.get(1).getY() + 60)); 
+  adjustments.add((Slider)elements.get(1));
+
+  
   imageMode(CENTER);
   temp = loadImage("redcar.jpg");
   edit = temp.copy();
