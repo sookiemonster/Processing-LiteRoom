@@ -3,14 +3,13 @@ import java.util.*;
 Window frame; //Setup the window
 ArrayList<WindowObject> left = new ArrayList<WindowObject>(2);
 ArrayList<WindowObject> right = new ArrayList<WindowObject>(8);
-ArrayList<Slider> elements = new ArrayList<Slider>(2);
+ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 boolean selected = false;
-Slider selectedElement;
+//Slider selectedElement;
 
 void setup() {
   size(1920, 1080);
   colorMode(HSB, 360, 100, 100); // Set the color mode to Hue (360 degrees), Saturation (0-100), Brightness (0-100)
-  //surface.setResizable(true); // Make the window Resizable
   surface.setTitle("Processing Room"); // Set the title of the window to "Processing Room"
   frame = new Window(); 
   elements.add(new Slider(100, 30, "Hue")); //Test purposes -- Working on Slider
