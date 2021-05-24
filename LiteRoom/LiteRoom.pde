@@ -23,6 +23,9 @@ void setup() {
   
   elements.add(new TemperatureSlider(right.get(1).getX() + 100, right.get(1).getY() + 60)); 
   adjustments.add((Slider)elements.get(1));
+  
+  elements.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + 90)); 
+  adjustments.add((Slider)elements.get(2));
 
   
   imageMode(CENTER);
