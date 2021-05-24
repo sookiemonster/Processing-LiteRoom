@@ -28,6 +28,10 @@ public class Window {
     return frameWidth;
   }
   
+  public float getHeight() {
+    return frameHeight;
+  }
+  
   public float getPadding() {
     return padding;
   }

@@ -1,7 +1,7 @@
 public abstract class Slider implements Interactable {
   
   protected final color primary = color(0, 0, 100);
-  private final int w = 150, h = 5, 
+  protected final int w = 150, h = 5, 
       roundness = 4, 
       handleWidth = 6, handleHeight = 9,
       padding = 14;

@@ -4,17 +4,27 @@ Window frame; //Setup the window
 ArrayList<WindowObject> left = new ArrayList<WindowObject>(2);
 ArrayList<WindowObject> right = new ArrayList<WindowObject>(8);
 ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
+ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
 Interactable selectedElement;
+PImage temp, edit;
 
 void setup() {
   size(1920, 1080);
   colorMode(HSB, 360, 100, 100); // Set the color mode to Hue (360 degrees), Saturation (0-100), Brightness (0-100)
   surface.setTitle("Processing Room"); // Set the title of the window to "Processing Room"
   frame = new Window(); 
-  elements.add(new BrightnessSlider(100, 30));
   setupLeft();
   setupRight();
   spaceWindowObjects();
+  
+  
+  elements.add(new BrightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 30));
+  adjustments.add((Slider)elements.get(0));
+  
+  imageMode(CENTER);
+  temp = loadImage("redcar.jpg");
+  edit = temp.copy();
+  image(edit, width / 2, height / 2);
 }
 
 void draw() {
@@ -22,6 +32,9 @@ void draw() {
   frame.display();           
   drawWindowObjects();
   drawElements();
+  edit = temp.copy();
+  adjust();
+  image(edit, width / 2, height / 2);
 }
 
 
@@ -84,4 +97,15 @@ void mouseReleased() {
     n.clearMouse();
   }
   selectedElement = null;
+}
+
+void adjust() {
+  for (Slider n : adjustments) {
+    for (int i = 0; i < edit.width; i++) {
+      for (int j = 0; j < edit.height; j++) {
+        edit.set(i, j, n.apply(edit.get(i,j)));
+        colorMode(HSB, 360, 100, 100);
+      }
+    }
+  }
 }
