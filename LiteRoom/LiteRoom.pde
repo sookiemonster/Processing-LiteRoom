@@ -10,10 +10,10 @@ boolean selected = false;
 void setup() {
   size(1920, 1080);
   colorMode(HSB, 360, 100, 100); // Set the color mode to Hue (360 degrees), Saturation (0-100), Brightness (0-100)
-  surface.setTitle("Processing Room"); // Set the title of the window to "Processing Room"
+  surface.setTitle("LiteRoom"); // Set the title of the window to "Processing Room"
   frame = new Window(); 
-  elements.add(new Slider(100, 30, "Hue")); //Test purposes -- Working on Slider
-  elements.add(new Slider(100, 50, "Saturation")); //Test purposes -- Working on Slider
+  //elements.add(new Slider(100, 30, "Hue")); //Test purposes -- Working on Slider
+  //elements.add(new Slider(100, 50, "Saturation")); //Test purposes -- Working on Slider
   setupLeft();
   setupRight();
   spaceWindowObjects();
@@ -69,23 +69,23 @@ void drawWindowObjects() {
 
 // Draws all elements. If an element is being dragged, no other elements will be dragged.
 void drawElements() {
-  if (selectedElement != null) {
-    selectedElement.drag();
-  }
+  //if (selectedElement != null) {
+  // selectedElement.drag();
+  //}
   
-  for (Slider n : elements) {
-    if (!selected && n.drag()) {
-      selected = true;
-      selectedElement = n;
-    }
-    n.display();
-  }
+  //for (Slider n : elements) {
+   // if (!selected && n.drag()) {
+    //  selected = true;
+      //selectedElement = n;
+    //}
+    //n.display();
+  //}
 }
 
 void mouseReleased() {
-  for (Slider n : elements) {
-    n.clearMouse();
-  }
-  selectedElement = null;
-  selected = false;
+  //for (Slider n : elements) {
+  //  n.clearMouse();
+  //}
+ //selectedElement = null;
+  //selected = false;
 }
