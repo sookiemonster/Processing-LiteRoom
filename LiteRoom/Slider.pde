@@ -1,4 +1,4 @@
-public class Slider {
+abstract class Slider implements Interactable {
   
   protected final color primary = color(0, 0, 100);
   private final int w = 150, h = 5, 
@@ -75,5 +75,9 @@ public class Slider {
   
   public boolean isPressed() {
     return pressed;
+  }
+  
+  public void apply(PImage src, float x, float y) {
+    
   }
 }
