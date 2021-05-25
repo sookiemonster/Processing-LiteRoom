@@ -106,6 +106,11 @@ void drawElements() {
       } else if (currentImage != null && ((Navigator)n).title().equals("Save Image") && ((Navigator)n).isPressed()) {
         PImage temp = get(288, 0, currentImage.width, currentImage.height);
         temp.save("image" + preview.incSave()+".png");
+      } else if (currentImage != null && ((Navigator)n).title().equals("Load Image") && ((Navigator)n).isPressed() && doOnce == false) {
+        currentImage = null;
+        selectInput("Select an image file: ", "fileSelected");
+        ((Navigator)n).clearMouse();
+        doOnce = true;
       }
     }
   }  

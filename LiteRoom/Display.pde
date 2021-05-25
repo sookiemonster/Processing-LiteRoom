@@ -1,12 +1,7 @@
 private PImage img;
 private int saveCount = 0;
-private boolean imgPresent = false;
 
 public class Display extends Navigator {
-  public String title() {
-    return "ajdsf";
-  }
-  
   public int incSave() {
     return saveCount++;
   }
@@ -14,7 +9,6 @@ public class Display extends Navigator {
   public Display(String file) {
     super(loadImage(file));
     img = loadImage(file);
-    imgPresent = true;
   }
   
   public void display() {
@@ -30,9 +24,4 @@ public class Display extends Navigator {
     return img;
   }
   
-  
- 
-  public boolean hasImg() {
-    return imgPresent;
-  }
 }
