@@ -14,5 +14,5 @@ LiteRoom (our version of Adobeâ€™s Lightroom) is an image editing program thatâ€
 ### Development Log
 
 5/24/2021
-Daniel - Created all the Slider subclasses necessary for proof of concept and made sure they generally work.
+Daniel - Created all the Slider subclasses necessary for proof of concept and made sure they generally work.  
 Jonathan - Created a Navigator class as well as two buttons necessary for loading and saving images.
