@@ -14,9 +14,19 @@ void setup() {
   frame = new Window(); 
   //elements.add(new Slider(100, 30, "Hue")); //Test purposes -- Working on Slider
   //elements.add(new Slider(100, 50, "Saturation")); //Test purposes -- Working on Slider
+  elements.add(new Navigator(frame.getPadding(), 966, "Load Image"));
+  elements.add(new Navigator(frame.getPadding(), 1005, "Save Image"));
   setupLeft();
   setupRight();
   spaceWindowObjects();
+}
+
+void fileSelected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected " + selection.getAbsolutePath());
+  }
 }
 
 void draw() {
@@ -72,13 +82,16 @@ void drawElements() {
   //if (selectedElement != null) {
   // selectedElement.drag();
   //}
-  
+  for (Interactable n : elements) {
+    n.display();
+    //selectInput("Select a file to process: ", "fileSelected");
+  }
   //for (Slider n : elements) {
-   // if (!selected && n.drag()) {
-    //  selected = true;
-      //selectedElement = n;
-    //}
-    //n.display();
+  //  if (!selected && n.drag()) {
+  //    selected = true;
+  //    selectedElement = n;
+  //  }
+  //  n.display();
   //}
 }
 
