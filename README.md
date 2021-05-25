@@ -9,4 +9,9 @@ Yagami Lite
 Daniel Sooknanan & Jonathan Wu
 
 **3.** Brief Description  
-LiteRoom (our version of Adobe’s Lightroom) is an image editing program that’s useful for color correction and color grading. Within the program there will be sliders that can be used to adjust certain aspects of the image, as well as a graph representing data from the image. 
+LiteRoom (our version of Adobe’s Lightroom) is an image editing program that’s useful for color correction and color grading. Within the program there will be sliders that can be used to adjust certain aspects of the image, as well as a graph representing data from the image.
+
+### Development Log
+
+5/24/2021
+Daniel - Created all the Slider subclasses necessary for proof of concept and made sure they generally work.
