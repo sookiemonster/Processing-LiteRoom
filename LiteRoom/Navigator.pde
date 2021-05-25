@@ -4,7 +4,18 @@ public class Navigator implements Interactable {
       padding = 10;
   private float x, y;
   private String label;
-  private boolean pressed, hovering, loadedImg, imgPresent;
+  private boolean pressed, hovering;
+  private boolean loading = true;
+  private PImage currentImage;
+  
+  public boolean toLoad() {
+    if (loading == true) {
+      loading = false;
+    } else {
+      loading = true;
+    } //<>//
+    return loading;
+  }
   
   public String title() {
     return label;
@@ -13,7 +24,7 @@ public class Navigator implements Interactable {
   public boolean isHovering() {
     hovering = inRect(mouseX, mouseY, x, y, x + w, y + h + 3);
     return hovering;
-  } //<>//
+  } 
   
   public boolean isPressed() {
     return pressed;
@@ -25,6 +36,10 @@ public class Navigator implements Interactable {
     this.label = s;
   }
   
+  public Navigator(PImage img) {
+    currentImage = img;
+  }
+  
   public void display() {
     rectMode(CORNER);
     stroke(0,0,20);
@@ -33,22 +48,12 @@ public class Navigator implements Interactable {
     rect(x, y, w, h);
     label();
   }
- 
-  
+
   public void handle() {
     stroke(0);
     if (isHovering() && mousePressed == true) {
       pressed = true;
       fill(0, 0, 40);
-      if (title().equals("Load Image") && loadedImg == false && imgPresent == false) {
-        selectInput("Select a file to process: ", "fileSelected");
-        clearMouse();
-        loadedImg = true;
-        return;
-      }
-      if (title().equals("Save Image")) {
-        save("image-#####.png");
-      }
     } else if (isHovering() && mousePressed == false) {
       pressed = false;
       fill(0, 0, 60);

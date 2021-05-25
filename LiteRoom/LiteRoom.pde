@@ -6,6 +6,7 @@ ArrayList<WindowObject> left = new ArrayList<WindowObject>(2);
 ArrayList<WindowObject> right = new ArrayList<WindowObject>(8);
 ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 boolean selected = false;
+boolean doOnce = false;
 Display preview;
 //Slider selectedElement;
 
@@ -28,9 +29,6 @@ void draw() {
   frame.display();           
   drawWindowObjects();
   drawElements();
-  if (currentImage != null) {
-    image(currentImage, 288,0);
-  }
 }
 
 
@@ -99,8 +97,18 @@ void drawElements() {
   // selectedElement.drag();
   //}
   for (Interactable n : elements) {
-    n.display(); //<>//
-  }
+    n.display(); 
+    if (n instanceof Navigator) {
+      if (currentImage == null && ((Navigator)n).title().equals("Load Image") && ((Navigator)n).isPressed() && doOnce == false)  { //<>//
+        selectInput("Select an image file: ", "fileSelected");
+        ((Navigator)n).clearMouse();
+        doOnce = true;
+      } else if (currentImage != null && ((Navigator)n).title().equals("Save Image") && ((Navigator)n).isPressed()) {
+        PImage temp = get(288, 0, currentImage.width, currentImage.height);
+        temp.save("image" + preview.incSave()+".png");
+      }
+    }
+  }  
   //for (Slider n : elements) {
   //  if (!selected && n.drag()) {
   //    selected = true;
@@ -111,6 +119,7 @@ void drawElements() {
 }
 
 void mouseReleased() {
+  doOnce = false;
   //for (Slider n : elements) {
   //  n.clearMouse();
   //}
