@@ -21,14 +21,6 @@ void setup() {
   spaceWindowObjects();
 }
 
-void fileSelected(File selection) {
-  if (selection == null) {
-    println("Window was closed or the user hit cancel.");
-  } else {
-    println("User selected " + selection.getAbsolutePath());
-  }
-}
-
 void draw() {
   frame.updateSize();
   frame.display();           
@@ -84,7 +76,11 @@ void drawElements() {
   //}
   for (Interactable n : elements) {
     n.display();
-    //selectInput("Select a file to process: ", "fileSelected");
+    if (n instanceof Navigator == true) {
+      if (n.isPressed() == true && n.title().equals("Load Image") {
+        
+      }
+    }
   }
   //for (Slider n : elements) {
   //  if (!selected && n.drag()) {
