@@ -4,7 +4,7 @@ public class Navigator implements Interactable {
       padding = 10;
   private float x, y;
   private String label;
-  private boolean pressed, hovering, loadedImg;
+  private boolean pressed, hovering, loadedImg, imgPresent;
   
   public String title() {
     return label;
@@ -40,10 +40,14 @@ public class Navigator implements Interactable {
     if (isHovering() && mousePressed == true) {
       pressed = true;
       fill(0, 0, 40);
-      if (title().equals("Load Image") && loadedImg == false) {
+      if (title().equals("Load Image") && loadedImg == false && imgPresent == false) {
         selectInput("Select a file to process: ", "fileSelected");
         clearMouse();
+        loadedImg = true;
         return;
+      }
+      if (title().equals("Save Image")) {
+        save("image-#####.png");
       }
     } else if (isHovering() && mousePressed == false) {
       pressed = false;
@@ -54,15 +58,6 @@ public class Navigator implements Interactable {
     }
   }
 
-  void fileSelected(File selection) {
-    if (selection == null) {
-      println("Window was closed or the user hit cancel.");
-      loadedImg = false;
-    } else {
-      println("User selected " + selection.getAbsolutePath());
-    }
-  }
-   
   public void clearMouse() {
     pressed = false;
     hovering = false;

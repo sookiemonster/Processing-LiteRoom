@@ -1,10 +1,12 @@
 import java.util.*;
 
 Window frame; //Setup the window
+PImage currentImage;
 ArrayList<WindowObject> left = new ArrayList<WindowObject>(2);
 ArrayList<WindowObject> right = new ArrayList<WindowObject>(8);
 ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 boolean selected = false;
+Display preview;
 //Slider selectedElement;
 
 void setup() {
@@ -26,6 +28,9 @@ void draw() {
   frame.display();           
   drawWindowObjects();
   drawElements();
+  if (currentImage != null) {
+    image(currentImage, 288,0);
+  }
 }
 
 
@@ -67,6 +72,25 @@ void drawWindowObjects() {
     }
     w.display();
   }
+  if (currentImage != null) {
+    if ((currentImage.height > 1080) || (currentImage.width > 1920-288-288)) {
+      currentImage = preview.resize(currentImage);
+    } 
+    image(currentImage, 288, 0);
+  }
+}
+
+// What happens during file selection
+void fileSelected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    String filename = "" + selection;
+    if (filename.indexOf(".gif") != -1 || filename.indexOf(".jpg") != -1 || filename.indexOf(".tga") != -1 || filename.indexOf(".png") != -1) {
+      preview = new Display(filename);
+      currentImage = loadImage(filename);
+    }
+  }
 }
 
 // Draws all elements. If an element is being dragged, no other elements will be dragged.
@@ -75,12 +99,7 @@ void drawElements() {
   // selectedElement.drag();
   //}
   for (Interactable n : elements) {
-    n.display();
-    if (n instanceof Navigator == true) {
-      if (n.isPressed() == true && n.title().equals("Load Image") {
-        
-      }
-    }
+    n.display(); //<>//
   }
   //for (Slider n : elements) {
   //  if (!selected && n.drag()) {
