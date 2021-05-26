@@ -19,3 +19,4 @@ Jonathan - Created a Navigator class as well as two buttons necessary for loadin
 
 5/25/2021
 Jonathan - Enhanced the load and saving buttons by adding error messages when the user performs an invalid action.
+Daniel - Added HSL to RGB conversions for sliders & added label option to WindowObjects.
