@@ -19,6 +19,6 @@ Daniel - Created all the Slider subclasses necessary for proof of concept and ma
 Jonathan - Created a Navigator class as well as two buttons necessary for loading and saving images. I also worked on resizing an image if it was larger than the editor in our program. I also made it allow to process one image at a time an infinite amount of time.
 
 5/25/2021  
-Jonathan - Enhanced the load and saving buttons by adding error messages when the user performs an invalid action.
+Jonathan - Enhanced the load and saving buttons by adding error messages when the user performs an invalid action. Also centered the image when loading the image.
 
 Daniel - Added HSL to RGB conversions for sliders & added label option to WindowObjects. Fixed merge conflicts between jBranch & dBranch and updated demo & main branches.
