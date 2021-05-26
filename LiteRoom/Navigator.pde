@@ -97,7 +97,9 @@ public class Navigator implements Interactable {
   
   public void saveImage(PImage image) {
     if (image != null) {
-      PImage temp = get(288, 0, image.width, image.height);
+      int newX = (1344 - img.width)/2;
+      int newY = (1080 - img.height)/2;
+      PImage temp = get(288 + newX, 0 + newY, image.width, image.height);
       temp.save("image" + incSave() +".png");
     }
   }
