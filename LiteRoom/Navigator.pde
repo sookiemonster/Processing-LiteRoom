@@ -131,4 +131,8 @@ public class Navigator implements Interactable {
     textAlign(CENTER, CENTER);
     text(label, x+(w/2), y+(h/2));
   }
+  
+  public boolean drag() {
+    return false;
+  }
 }
