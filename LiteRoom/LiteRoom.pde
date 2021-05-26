@@ -32,6 +32,8 @@ void setup() {
   temp = loadImage("redcar.jpg");
   edit = temp.copy();
   image(edit, width / 2, height / 2);
+  
+  adjustments.get(0).toRGB(249, .04, .31);
 }
 
 void draw() {
@@ -107,9 +109,9 @@ void mouseReleased() {
 }
 
 void adjust() {
-  for (Slider n : adjustments) {
-    for (int i = 0; i < edit.width; i++) {
-      for (int j = 0; j < edit.height; j++) {
+  for (int i = 0; i < edit.width; i++) {
+    for (int j = 0; j < edit.height; j++) {
+      for (Slider n : adjustments) {
         edit.set(i, j, n.apply(edit.get(i,j)));
         colorMode(HSB, 360, 100, 100);
       }

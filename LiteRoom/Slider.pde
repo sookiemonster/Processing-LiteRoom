@@ -77,5 +77,51 @@ public abstract class Slider implements Interactable {
     return pressed;
   }
   
+  // 0 <= s <= 1
+  // 0 <= l <= 1
+  public color toRGB(float h, float s, float l) {
+    if (s == 0) {
+      return color(l * 255, l * 255, l * 255);
+    } else {
+      float temp1, temp2, nH, nR, nG, nB;
+      if (l < .5) {
+        temp1 = l * (1 + s);
+      } else {
+        temp1 = l + s - (l * s);
+      }
+      temp2 = (2 * l) - temp1;
+      nH = h / 360;
+      nR = nH + .333;
+      nG = nH;
+      nB = nH - .333;
+      if (nR > 1) {
+        nR -= 1;
+      }
+      if (nB < 0) {
+        nB += 1;
+      }
+      return color(convertChannel(nR, temp1, temp2) * 255, convertChannel(nG, temp1, temp2) * 255, convertChannel(nB, temp1, temp2) * 255);
+    }
+  }
+  
+  private float convertChannel(float channel, float temp1, float temp2) {
+    if (6 * channel < 1) {
+      return temp2 + (temp1 - temp2) * 6 * channel;
+    } else if (2 * channel < 1) {
+      return temp1;
+    } else if (3 * channel < 2) {
+      return temp2 + (temp1 - temp2) * (.666 - channel) * 6;
+    } else {
+      return temp2;
+    }
+  }
+  
+  public float lightness(int r, int g, int b) {
+    float nR = r / 255;
+    float nG = g / 255;
+    float nB = b / 255;
+    return (max(nR, nG, nB) + min(nR, nG, nB)) / 2.0; 
+  }
+  
   public abstract color apply(color c);
 }
