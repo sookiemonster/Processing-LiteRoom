@@ -6,8 +6,14 @@ public class Display {
     img = loadImage(file);
   }
   
+  public Display(PImage newImage) {
+    img = newImage;
+  }
+  
   public void display() {
-    image(img, 288, 0);
+    int newX = (1344 - img.width)/2;
+    int newY = (1080 - img.height)/2;
+    image(img, 288 + newX, 0 + newY);
   }
   
   public PImage resize(PImage img) {

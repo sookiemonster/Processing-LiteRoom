@@ -9,7 +9,7 @@ ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
 Interactable selectedElement;
 boolean selected = false;
 boolean doOnce = false;
-Display preview;
+Display preview, editPreview;
 
 void setup() {
   size(1920, 1080);
@@ -44,6 +44,7 @@ void draw() {
   if (currentImage != null) {
     edit = currentImage.copy();
     adjust();
+    editPreview = new Display(edit);
   }
 }
 
@@ -91,9 +92,9 @@ void drawWindowObjects() {
       currentImage = preview.resize(currentImage);
     } 
     if (edit != null) {
-      image(edit, 288, 0);
+      editPreview.display();
     } else {
-      image(currentImage, 288, 0);
+      preview.display();
     }
   }
 }
@@ -124,7 +125,7 @@ void drawElements() {
       if (n.isPressed() && doOnce == false) { //<>//
         ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         doOnce = true;
-      } //<>//
+      } //<>// //<>//
     }
    if (selectedElement == null && n.drag()) {
       selectedElement = n;
@@ -132,7 +133,7 @@ void drawElements() {
   n.display(); 
   }  
 }
-
+ //<>//
 void mouseReleased() {
   for (Interactable n : elements) {
     n.clearMouse();
