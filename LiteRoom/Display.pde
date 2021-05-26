@@ -1,13 +1,8 @@
 private PImage img;
-private int saveCount = 0;
 
-public class Display extends Navigator {
-  public int incSave() {
-    return saveCount++;
-  }
+public class Display {
   
   public Display(String file) {
-    super(loadImage(file));
     img = loadImage(file);
   }
   

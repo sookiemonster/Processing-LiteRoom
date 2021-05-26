@@ -1,21 +1,15 @@
 public class Navigator implements Interactable {
   protected final color primary = color(0, 0, 20);
-  private final int w = 268, h = 30, 
-      padding = 10;
+  private final int w = 268, h = 30, padding = 10;
+  private int saveCount = 0;
   private float x, y;
   private String label;
   private boolean pressed, hovering;
-  private boolean loading = true;
-  private PImage currentImage;
+  private PImage currentImage; //<>//
   
-  public boolean toLoad() {
-    if (loading == true) {
-      loading = false;
-    } else {
-      loading = true;
-    } //<>//
-    return loading;
-  }
+  private int incSave() {
+    return saveCount++;
+  } 
   
   public String title() {
     return label;
@@ -30,10 +24,11 @@ public class Navigator implements Interactable {
     return pressed;
   }
   
-  public Navigator(float x, float y, String s) {
+  public Navigator(float x, float y, String s, PImage picture) {
     this.x = x;
     this.y = padding+y;
     this.label = s;
+    currentImage = picture;
   }
   
   public Navigator(PImage img) {
@@ -60,6 +55,31 @@ public class Navigator implements Interactable {
     } else {
       clearMouse();
       fill(0, 0, 80);
+    }
+  }
+  
+  public void buttonFunction(String s, PImage img) {
+    if (s.equals("Load Image")) {
+      selectImage(img);
+    } else if (s.equals("Save Image")) {
+      saveImage(img);
+    }
+    clearMouse();
+  }
+  
+  public void selectImage(PImage img) {
+    if (img == null) {
+      selectInput("Select an image file: ", "fileSelected");
+      
+    } else {
+      
+    }
+  }
+  
+  public void saveImage(PImage image) {
+    if (image != null) {
+      PImage temp = get(288, 0, image.width, image.height);
+      temp.save("image" + incSave() +".png");
     }
   }
 

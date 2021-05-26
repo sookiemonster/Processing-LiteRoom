@@ -17,8 +17,8 @@ void setup() {
   frame = new Window(); 
   //elements.add(new Slider(100, 30, "Hue")); //Test purposes -- Working on Slider
   //elements.add(new Slider(100, 50, "Saturation")); //Test purposes -- Working on Slider
-  elements.add(new Navigator(frame.getPadding(), 966, "Load Image"));
-  elements.add(new Navigator(frame.getPadding(), 1005, "Save Image"));
+  elements.add(new Navigator(frame.getPadding(), 966, "Load Image", currentImage));
+  elements.add(new Navigator(frame.getPadding(), 1005, "Save Image", currentImage));
   setupLeft();
   setupRight();
   spaceWindowObjects();
@@ -99,19 +99,10 @@ void drawElements() {
   for (Interactable n : elements) {
     n.display(); 
     if (n instanceof Navigator) {
-      if (currentImage == null && ((Navigator)n).title().equals("Load Image") && ((Navigator)n).isPressed() && doOnce == false)  { //<>//
-        selectInput("Select an image file: ", "fileSelected");
-        ((Navigator)n).clearMouse();
+      if (n.isPressed() && doOnce == false) {
+        ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         doOnce = true;
-      } else if (currentImage != null && ((Navigator)n).title().equals("Save Image") && ((Navigator)n).isPressed()) {
-        PImage temp = get(288, 0, currentImage.width, currentImage.height);
-        temp.save("image" + preview.incSave()+".png");
-      } else if (currentImage != null && ((Navigator)n).title().equals("Load Image") && ((Navigator)n).isPressed() && doOnce == false) {
-        currentImage = null;
-        selectInput("Select an image file: ", "fileSelected");
-        ((Navigator)n).clearMouse();
-        doOnce = true;
-      }
+      } //<>//
     }
   }  
   //for (Slider n : elements) {
