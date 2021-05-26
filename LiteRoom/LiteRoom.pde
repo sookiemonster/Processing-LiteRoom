@@ -1,27 +1,39 @@
 import java.util.*;
 
 Window frame; //Setup the window
-PImage currentImage;
+PImage currentImage, edit;
 ArrayList<WindowObject> left = new ArrayList<WindowObject>(2);
 ArrayList<WindowObject> right = new ArrayList<WindowObject>(8);
 ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
+ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
+Interactable selectedElement;
 boolean selected = false;
 boolean doOnce = false;
 Display preview;
-//Slider selectedElement;
 
 void setup() {
   size(1920, 1080);
   colorMode(HSB, 360, 100, 100); // Set the color mode to Hue (360 degrees), Saturation (0-100), Brightness (0-100)
   surface.setTitle("LiteRoom"); // Set the title of the window to "Processing Room"
   frame = new Window(); 
-  //elements.add(new Slider(100, 30, "Hue")); //Test purposes -- Working on Slider
-  //elements.add(new Slider(100, 50, "Saturation")); //Test purposes -- Working on Slider
+  
   elements.add(new Navigator(frame.getPadding(), 966, "Load Image", currentImage));
   elements.add(new Navigator(frame.getPadding(), 1005, "Save Image", currentImage));
+  
   setupLeft();
   setupRight();
   spaceWindowObjects();
+  
+  
+  elements.add(new BrightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 50));
+  adjustments.add((Slider)elements.get(2));
+  
+  elements.add(new TemperatureSlider(right.get(1).getX() + 100, right.get(1).getY() + 80)); 
+  adjustments.add((Slider)elements.get(3));
+  
+  elements.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + 110)); 
+  adjustments.add((Slider)elements.get(4));
+
 }
 
 void draw() {
@@ -29,6 +41,10 @@ void draw() {
   frame.display();           
   drawWindowObjects();
   drawElements();
+  if (currentImage != null) {
+    edit = currentImage.copy();
+    adjust();
+  }
 }
 
 
@@ -43,8 +59,8 @@ void setupLeft() {
 // Create Window Objects on the right side
 void setupRight() {
   float rightX = frame.getSideBarWidth() + frame.getWidth() + frame.getPadding();
-  right.add(new WindowObject(rightX, frame.getPadding(), 200));
-  right.add(new WindowObject(rightX, 0, 500));
+  right.add(new WindowObject(rightX, frame.getPadding(), 200, "Histogram"));
+  right.add(new WindowObject(rightX, 0, 500, "Adjustments"));
   right.add(new WindowObject(rightX, 0, 100));
 }
 
@@ -74,7 +90,11 @@ void drawWindowObjects() {
     if ((currentImage.height > 1080) || (currentImage.width > 1920-288-288)) {
       currentImage = preview.resize(currentImage);
     } 
-    image(currentImage, 288, 0);
+    if (edit != null) {
+      image(edit, 288, 0);
+    } else {
+      image(currentImage, 288, 0);
+    }
   }
 }
 
@@ -93,11 +113,10 @@ void fileSelected(File selection) {
 
 // Draws all elements. If an element is being dragged, no other elements will be dragged.
 void drawElements() {
-  //if (selectedElement != null) {
-  // selectedElement.drag();
-  //}
+  if (selectedElement != null) {
+    selectedElement.drag();
+  }
   for (Interactable n : elements) {
-    n.display(); 
     if (n instanceof Navigator) {
       if (currentImage != null && ((Navigator)n).imgPresent() == false) {
         ((Navigator)n).storeImage(currentImage);
@@ -107,21 +126,28 @@ void drawElements() {
         doOnce = true;
       } //<>//
     }
+   if (selectedElement == null && n.drag()) {
+      selectedElement = n;
+    }
+  n.display(); 
   }  
-  //for (Slider n : elements) {
-  //  if (!selected && n.drag()) {
-  //    selected = true;
-  //    selectedElement = n;
-  //  }
-  //  n.display();
-  //}
 }
 
 void mouseReleased() {
+  for (Interactable n : elements) {
+    n.clearMouse();
+  }
+  selectedElement = null;
   doOnce = false;
-  //for (Slider n : elements) {
-  //  n.clearMouse();
-  //}
- //selectedElement = null;
-  //selected = false;
+}
+
+void adjust() {
+  for (int i = 0; i < edit.width; i++) {
+    for (int j = 0; j < edit.height; j++) {
+      for (Slider n : adjustments) {
+        edit.set(i, j, n.apply(edit.get(i,j)));
+        colorMode(HSB, 360, 100, 100);
+      }
+    }
+  }
 }
