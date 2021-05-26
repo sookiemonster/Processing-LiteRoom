@@ -99,7 +99,10 @@ void drawElements() {
   for (Interactable n : elements) {
     n.display(); 
     if (n instanceof Navigator) {
-      if (n.isPressed() && doOnce == false) {
+      if (currentImage != null && ((Navigator)n).imgPresent() == false) {
+        ((Navigator)n).storeImage(currentImage);
+      }
+      if (n.isPressed() && doOnce == false) { //<>//
         ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         doOnce = true;
       } //<>//
