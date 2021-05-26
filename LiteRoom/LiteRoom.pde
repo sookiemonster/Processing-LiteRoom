@@ -18,13 +18,13 @@ void setup() {
   spaceWindowObjects();
   
   
-  elements.add(new BrightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 30));
+  elements.add(new BrightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 50));
   adjustments.add((Slider)elements.get(0));
   
-  elements.add(new TemperatureSlider(right.get(1).getX() + 100, right.get(1).getY() + 60)); 
+  elements.add(new TemperatureSlider(right.get(1).getX() + 100, right.get(1).getY() + 80)); 
   adjustments.add((Slider)elements.get(1));
   
-  elements.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + 90)); 
+  elements.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + 110)); 
   adjustments.add((Slider)elements.get(2));
 
   
@@ -32,8 +32,6 @@ void setup() {
   temp = loadImage("redcar.jpg");
   edit = temp.copy();
   image(edit, width / 2, height / 2);
-  
-  adjustments.get(0).toRGB(249, .04, .31);
 }
 
 void draw() {
@@ -58,8 +56,8 @@ void setupLeft() {
 // Create Window Objects on the right side
 void setupRight() {
   float rightX = frame.getSideBarWidth() + frame.getWidth() + frame.getPadding();
-  right.add(new WindowObject(rightX, frame.getPadding(), 200));
-  right.add(new WindowObject(rightX, 0, 500));
+  right.add(new WindowObject(rightX, frame.getPadding(), 200, "Histogram"));
+  right.add(new WindowObject(rightX, 0, 500, "Adjustments"));
   right.add(new WindowObject(rightX, 0, 100));
 }
 

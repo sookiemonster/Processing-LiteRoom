@@ -1,7 +1,7 @@
 public class Window {
   
   // Define colors used within the window and child elements
-  protected final color primary = color(0, 0, 20), secondary = color(0, 0, 40), tertiary = color(0, 0, 60);
+  protected final color primary = color(0, 0, 17), secondary = color(0, 0, 40), tertiary = color(0, 0, 60);
   protected final float sideBarWidth = 288, padding = 10;
   protected float frameHeight, frameWidth;
   

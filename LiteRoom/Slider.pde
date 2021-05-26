@@ -123,5 +123,11 @@ public abstract class Slider implements Interactable {
     return (max(nR, nG, nB) + min(nR, nG, nB)) / 2.0; 
   }
   
+  public float getHeight() {
+    return this.h + 2;
+  }
+  
   public abstract color apply(color c);
+  
+  //public abstract color apply(color c, float weight);
 }
