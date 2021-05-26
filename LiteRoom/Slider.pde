@@ -2,11 +2,10 @@ public abstract class Slider implements Interactable {
   
   protected final color primary = color(0, 0, 100);
   protected final int w = 150, h = 5, 
-      roundness = 4, 
       handleWidth = 6, handleHeight = 9,
       padding = 14;
   private int position;
-  private float x, y;
+  protected float x, y;
   private String label;
   private boolean pressed, hovering;
   
@@ -19,11 +18,39 @@ public abstract class Slider implements Interactable {
   
   public void display() {
     rectMode(CORNER);
-    stroke(0,0,20);
-    fill(0, 0, 60);
-    rect(x, y, w, h, roundness);
+    outline();
     handle();
     label();
+  }
+  
+  public void outline() {
+    rectMode(CORNER);
+    stroke(0);
+    noFill();
+    rect(x, y, w, h);
+  }
+  
+  private void gradient2(color c1, color c2) {
+    for (float i = 0; i < w; i++) {
+      color temp = lerpColor(c1, c2, (i / w));
+      stroke(hue(temp), saturation(temp), brightness(temp));
+      line(x + i, y, x + i, y + h);
+    }
+  }
+  
+  private void gradient3(color c1, color c2) {
+    color mid1 = color(hue(c1), 1, brightness(c1));
+    color mid2 = color(hue(c2), 1, brightness(c2));
+    for (float i = 0; i < w; i++) {
+      color temp;
+      if (i < w/2) {
+        temp = lerpColor(c1, mid1, (i / w) * 2);
+      } else {
+        temp = lerpColor(mid2, c2, ((i-w/2) / w) * 2);
+      }
+      stroke(hue(temp), saturation(temp), brightness(temp));
+      line(x + i, y, x + i, y + h);
+    }
   }
   
   public void handle() {

@@ -1,7 +1,14 @@
 public class BrightnessSlider extends Slider {
   
+  private final color left = color(0,0,5), right = color(0,0,70); 
+  
   public BrightnessSlider(float x, float y) {
     super(x, y, "Brightness");
+  }
+  
+  public void display() {
+    super.gradient2(left, right);
+    super.display();
   }
   
   private float adjustment() {
