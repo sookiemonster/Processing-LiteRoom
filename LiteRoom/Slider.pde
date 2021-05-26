@@ -154,6 +154,10 @@ public abstract class Slider implements Interactable {
     return this.h + 2;
   }
   
+  public boolean isChanged() {
+    return getPosition() != w / 2;
+  }
+  
   public abstract color apply(color c);
   
   //public abstract color apply(color c, float weight);

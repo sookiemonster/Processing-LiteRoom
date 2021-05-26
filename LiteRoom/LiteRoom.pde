@@ -1,14 +1,15 @@
 import java.util.*;
 
 Window frame; //Setup the window
-PImage currentImage, edit;
 ArrayList<WindowObject> left = new ArrayList<WindowObject>(2);
 ArrayList<WindowObject> right = new ArrayList<WindowObject>(8);
 ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
+
 Interactable selectedElement;
-boolean selected = false;
 boolean doOnce = false;
+
+PImage currentImage, edit;
 Display preview, editPreview;
 
 void setup() {
@@ -33,7 +34,7 @@ void setup() {
   
   elements.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + 110)); 
   adjustments.add((Slider)elements.get(4));
-
+  
 }
 
 void draw() {
@@ -42,10 +43,22 @@ void draw() {
   drawWindowObjects();
   drawElements();
   if (currentImage != null) {
-    edit = currentImage.copy();
-    adjust();
+    if (edit == null) {
+      edit = currentImage.copy();
+      edit.loadPixels();
+    }
+    if (selectedElement != null) {
+      edit = currentImage.copy();
+      edit.loadPixels();
+      adjust();
+    }
     editPreview = new Display(edit);
   }
+  fill(0,0,100);
+  textSize(20);
+  textAlign(LEFT);
+  text("FPS: "+ frameRate, 40, 60);
+
 }
 
 
@@ -125,7 +138,7 @@ void drawElements() {
       if (n.isPressed() && doOnce == false) { //<>//
         ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         doOnce = true;
-      } //<>// //<>//
+      }  //<>//
     }
    if (selectedElement == null && n.drag()) {
       selectedElement = n;
@@ -142,11 +155,26 @@ void mouseReleased() {
   doOnce = false;
 }
 
+//void adjust() {
+//  for (int i = 0; i < edit.width; i++) {
+//    for (int j = 0; j < edit.height; j++) {
+//      color temp = edit.get(i,j);
+//      for (Slider n : adjustments) {
+//        if (n.isChanged()) {
+//          temp = n.apply(temp);
+//          colorMode(HSB, 360, 100, 100);
+//        }
+//      }
+//      edit.set(i,j, temp);
+//    }
+//  }
+//}
+
 void adjust() {
-  for (int i = 0; i < edit.width; i++) {
-    for (int j = 0; j < edit.height; j++) {
-      for (Slider n : adjustments) {
-        edit.set(i, j, n.apply(edit.get(i,j)));
+  for (int i = 0; i < edit.pixels.length; i++) {
+    for (Slider n : adjustments) {
+      if (n.isChanged()) {
+        edit.pixels[i] = n.apply(edit.pixels[i]);
         colorMode(HSB, 360, 100, 100);
       }
     }

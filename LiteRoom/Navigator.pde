@@ -5,7 +5,7 @@ public class Navigator implements Interactable {
   private float x, y;
   private String label;
   private boolean pressed, hovering;
-  private boolean hasImage = false; //<>//
+  private boolean hasImage = false; //<>// //<>//
   private boolean error1 = false;
   private boolean error2 = false;
   private PImage currentImage; 
