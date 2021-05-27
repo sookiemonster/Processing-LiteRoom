@@ -12,6 +12,10 @@ boolean doOnce = false;
 PImage currentImage, edit;
 Display preview, editPreview;
 
+int frames = 0;
+final int updateInterval = 6; 
+
+
 void setup() {
   size(1920, 1080);
   colorMode(HSB, 360, 100, 100); // Set the color mode to Hue (360 degrees), Saturation (0-100), Brightness (0-100)
@@ -47,7 +51,7 @@ void draw() {
       edit = currentImage.copy();
       edit.loadPixels();
     }
-    if (selectedElement != null) {
+    if (selectedElement != null && frames % updateInterval == 0) {
       edit = currentImage.copy();
       edit.loadPixels();
       adjust();
@@ -58,7 +62,8 @@ void draw() {
   textSize(20);
   textAlign(LEFT);
   text("FPS: "+ frameRate, 40, 60);
-
+  
+  frames++;
 }
 
 
@@ -154,21 +159,6 @@ void mouseReleased() {
   selectedElement = null;
   doOnce = false;
 }
-
-//void adjust() {
-//  for (int i = 0; i < edit.width; i++) {
-//    for (int j = 0; j < edit.height; j++) {
-//      color temp = edit.get(i,j);
-//      for (Slider n : adjustments) {
-//        if (n.isChanged()) {
-//          temp = n.apply(temp);
-//          colorMode(HSB, 360, 100, 100);
-//        }
-//      }
-//      edit.set(i,j, temp);
-//    }
-//  }
-//}
 
 void adjust() {
   for (int i = 0; i < edit.pixels.length; i++) {

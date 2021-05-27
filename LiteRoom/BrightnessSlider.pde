@@ -12,7 +12,7 @@ public class BrightnessSlider extends Slider {
   }
   
   private float adjustment() {
-    return (this.getPosition() - (w / 2.0)) / (w / 4.0);
+    return (this.getPosition() - (w / 2.0)) / (w / 3.0);
   }
   
   public color apply(color c) {
