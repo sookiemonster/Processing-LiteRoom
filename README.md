@@ -24,4 +24,5 @@ Jonathan - Enhanced the load and saving buttons by adding error messages when th
 Daniel - Added HSL to RGB conversions for sliders & added label option to WindowObjects. Fixed merge conflicts between jBranch & dBranch and updated demo & main branches.
 
 5/26/2021 
+
 Daniel - Optimized draw() a lot, increasing the fps from roughly 9fps to minimum of 24fps for large (4000 x 2000) images. Added a update interval which only calls draw() every specified number of frames. Added better visuals to siders to more effectively convey their function.  
