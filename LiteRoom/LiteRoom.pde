@@ -13,7 +13,7 @@ PImage currentImage, edit;
 Display preview, editPreview;
 
 int frames = 0;
-final int updateInterval = 6; 
+final int updateInterval = 2; 
 
 
 void setup() {
@@ -42,28 +42,32 @@ void setup() {
 }
 
 void draw() {
+  frames++;
+  
   frame.updateSize();
   frame.display();           
   drawWindowObjects();
   drawElements();
+  
   if (currentImage != null) {
     if (edit == null) {
       edit = currentImage.copy();
       edit.loadPixels();
     }
-    if (selectedElement != null && frames % updateInterval == 0) {
+    if (selectedElement != null && frames > updateInterval) {
+      frames = 0;
       edit = currentImage.copy();
       edit.loadPixels();
       adjust();
     }
     editPreview = new Display(edit);
   }
+  
   fill(0,0,100);
   textSize(20);
   textAlign(LEFT);
   text("FPS: "+ frameRate, 40, 60);
   
-  frames++;
 }
 
 
