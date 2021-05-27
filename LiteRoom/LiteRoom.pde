@@ -39,6 +39,18 @@ void setup() {
   elements.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + 110)); 
   adjustments.add((Slider)elements.get(4));
   
+  elements.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 140, "Highlights", 0.9, 1)); 
+  adjustments.add((Slider)elements.get(5));
+  
+  elements.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 170, "Whites", .75, .9)); 
+  adjustments.add((Slider)elements.get(6));
+  
+  elements.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 200, "Shadows", 0.25, .5)); 
+  adjustments.add((Slider)elements.get(7));
+  
+  elements.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 230, "Blacks", 0.0, .25)); 
+  adjustments.add((Slider)elements.get(8));
+  
 }
 
 void draw() {
@@ -169,8 +181,8 @@ void adjust() {
     for (Slider n : adjustments) {
       if (n.isChanged()) {
         edit.pixels[i] = n.apply(edit.pixels[i]);
-        colorMode(HSB, 360, 100, 100);
       }
     }
   }
+  colorMode(HSB, 360, 100, 100);
 }

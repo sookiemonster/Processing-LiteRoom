@@ -143,7 +143,7 @@ public abstract class Slider implements Interactable {
     }
   }
   
-  public float lightness(int r, int g, int b) {
+  public float lightness(float r, float g, float b) {
     float nR = r / 255;
     float nG = g / 255;
     float nB = b / 255;
