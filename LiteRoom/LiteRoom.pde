@@ -31,6 +31,8 @@ void setup() {
   
   drawAdjuster();
   
+  spaceWindowObjects();
+  
   drawWindowObjects();
   drawElements();
   
@@ -171,19 +173,25 @@ void adjust() {
 }
 
 void drawAdjuster() {
-  int initialY = 55;
+  WindowObject w = right.get(1);
+  float containerY = w.getInteriorY();
+  
   int spacing = 30;
   int counter = 0;
-  
-  adjustments.add(new BrightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY)); counter++;
-  adjustments.add(new TemperatureSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing))); counter++;
-  adjustments.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing))); counter++;
-  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing), "Highlights", 0.9, 1)); counter++;
-  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing), "Whites", .75, .9)); counter++;
-  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing), "Shadows", 0.25, .5)); counter++;
-  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing), "Blacks", 0.0, .25)); counter++;
+   
+  adjustments.add(new BrightnessSlider(right.get(1).getX() + 100, containerY)); counter++;
+  adjustments.add(new TemperatureSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
+  adjustments.add(new TintSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
+  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Highlights", 0.9, 1)); counter++;
+  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Whites", .75, .9)); counter++;
+  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Shadows", 0.25, .5)); counter++;
+  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Blacks", 0.0, .25)); counter++;
   
   for (Slider n : adjustments) {
     elements.add(n);
   }
+  
+  w.setHeight((counter - 1) * (adjustments.get(0).getHeight() + spacing) + spacing / 2);
+  
+  
 }

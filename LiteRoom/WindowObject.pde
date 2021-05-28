@@ -49,11 +49,22 @@ public class WindowObject extends Window {
     return h;
   }
   
+  public void setHeight(float h) {
+    this.h = h;
+  }
+  
   public float getX() {
     return x;
   }
   
   public float getY() {
+    return y;
+  }
+  
+  public float getInteriorY() {
+    if (label != null) {
+      return y + 5 * padding;
+    }
     return y;
   }
   
