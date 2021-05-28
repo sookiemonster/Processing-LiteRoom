@@ -16,6 +16,8 @@ public class Display {
     image(img, 288 + newX, 0 + newY);
   }
   
+  public void 
+  
   public PImage resize(PImage img) {
     if (img.width > 1920-288-288) {
       img.resize(1920-288-288,0);
