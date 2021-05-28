@@ -31,3 +31,5 @@ Jonathan - Started working the "zoom" partion of the navigator class.
 5/27/2021
 
 Jonathan - Got the image to display in the "zoom" box. Start working on the part that zooms in on the specific part of the image.
+
+Daniel - Added lightness, saturation, & sharpness sliders. Updated WindowObject & slider organization. 
