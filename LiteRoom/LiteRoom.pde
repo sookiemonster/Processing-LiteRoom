@@ -186,7 +186,7 @@ void mouseReleased() {
 
 void adjust() {
   colorMode(RGB, 256, 256, 256);
-  for (int i = 0; i < edit.pixels.length; i++) {
+  for (int i = 0; i < pSharp.pixels.length; i++) {
     if (isSharpening) {
       edit.pixels[i] =lerpColor(edit.pixels[i], pSharp.pixels[i], sharpen.getDiff());
     }
