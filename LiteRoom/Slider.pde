@@ -53,6 +53,18 @@ public abstract class Slider implements Interactable {
     }
   }
   
+  private void gradientWrap(color c1, float diff) {
+    colorMode(HSB, 360, 100, 100);
+    float tempHue = hue(c1);
+    for (float i = 0; i < w; i++) {
+      color temp;
+      temp = color(tempHue % 360, 100, 100);
+      stroke(hue(temp), saturation(temp), brightness(temp));
+      line(x + i, y, x + i, y + h);
+      tempHue += diff / w;
+    }
+  }
+  
   public void handle() {
     stroke(0);
     if (pressed) {

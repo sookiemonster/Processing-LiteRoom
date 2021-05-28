@@ -218,6 +218,12 @@ void drawAdjuster() {
   adjustments.add(new SaturationSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   sharpen = (SharpnessSlider)adjustments.get(adjustments.size() - 1);
+  adjustments.add(new HueSlider(right.get(1).getX() + 100, containerY + (counter * spacing), 0)); counter++;
+  adjustments.add(new HueSlider(right.get(1).getX() + 100, containerY + (counter * spacing), 30)); counter++;
+  adjustments.add(new HueSlider(right.get(1).getX() + 100, containerY + (counter * spacing), 60)); counter++;
+
+
+
   
   for (Slider n : adjustments) {
     elements.add(n);
