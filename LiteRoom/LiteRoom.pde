@@ -29,27 +29,10 @@ void setup() {
   setupRight();
   spaceWindowObjects();
   
+  drawAdjuster();
   
-  elements.add(new BrightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 50));
-  adjustments.add((Slider)elements.get(2));
-  
-  elements.add(new TemperatureSlider(right.get(1).getX() + 100, right.get(1).getY() + 80)); 
-  adjustments.add((Slider)elements.get(3));
-  
-  elements.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + 110)); 
-  adjustments.add((Slider)elements.get(4));
-  
-  elements.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 140, "Highlights", 0.9, 1)); 
-  adjustments.add((Slider)elements.get(5));
-  
-  elements.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 170, "Whites", .75, .9)); 
-  adjustments.add((Slider)elements.get(6));
-  
-  elements.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 200, "Shadows", 0.25, .5)); 
-  adjustments.add((Slider)elements.get(7));
-  
-  elements.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + 230, "Blacks", 0.0, .25)); 
-  adjustments.add((Slider)elements.get(8));
+  drawWindowObjects();
+  drawElements();
   
 }
 
@@ -57,7 +40,7 @@ void draw() {
   frames++;
   
   frame.updateSize();
-  frame.display();           
+  frame.display();      
   drawWindowObjects();
   drawElements();
   
@@ -161,7 +144,7 @@ void drawElements() {
         doOnce = true;
       }  //<>//
     }
-   if (selectedElement == null && n.drag()) {
+   if (selectedElement == null && currentImage != null && n.drag()) {
       selectedElement = n;
     }
   n.display(); 
@@ -185,4 +168,22 @@ void adjust() {
     }
   }
   colorMode(HSB, 360, 100, 100);
+}
+
+void drawAdjuster() {
+  int initialY = 55;
+  int spacing = 30;
+  int counter = 0;
+  
+  adjustments.add(new BrightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY)); counter++;
+  adjustments.add(new TemperatureSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing))); counter++;
+  adjustments.add(new TintSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing))); counter++;
+  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing), "Highlights", 0.9, 1)); counter++;
+  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing), "Whites", .75, .9)); counter++;
+  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing), "Shadows", 0.25, .5)); counter++;
+  adjustments.add(new LightnessSlider(right.get(1).getX() + 100, right.get(1).getY() + initialY + (counter * spacing), "Blacks", 0.0, .25)); counter++;
+  
+  for (Slider n : adjustments) {
+    elements.add(n);
+  }
 }
