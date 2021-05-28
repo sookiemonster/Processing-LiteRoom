@@ -186,6 +186,7 @@ void drawAdjuster() {
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Whites", .75, .9)); counter++;
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Shadows", 0.25, .5)); counter++;
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Blacks", 0.0, .25)); counter++;
+  adjustments.add(new SaturationSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   
   for (Slider n : adjustments) {
     elements.add(n);
