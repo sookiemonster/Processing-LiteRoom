@@ -17,7 +17,7 @@ public class Display {
     int newX = (1344 - img.width)/2;
     int newY = (1080 - img.height)/2;
     image(img, 288 + newX, 0 + newY);
-    if (smallImage.width > 288 || smallImage.height >200) {
+    if (smallImage.width > 267 || smallImage.height > 199) {
       resizeSmall();
     }
     smallDisplay();
