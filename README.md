@@ -27,3 +27,7 @@ Daniel - Added HSL to RGB conversions for sliders & added label option to Window
 Daniel - Optimized draw() a lot, increasing the fps from roughly 9fps to minimum of 24fps for large (4000 x 2000) images. Added a update interval which only calls draw() every specified number of frames. Added better visuals to siders to more effectively convey their function.  
 
 Jonathan - Started working the "zoom" partion of the navigator class.
+
+5/27/2021
+
+Jonathan - Got the image to display in the "zoom" box. Start working on the part that zooms in on the specific part of the image.
