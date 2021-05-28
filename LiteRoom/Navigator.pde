@@ -73,8 +73,8 @@ public class Navigator implements Interactable {
   }
   
   public void zoomBox() {
-    if (imgPresent() == true) [
-  
+    if (imgPresent() == true) {
+      return;
     }
   }
   
