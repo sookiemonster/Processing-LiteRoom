@@ -19,7 +19,6 @@ public class SaturationSlider extends Slider {
   }
   
   public color apply(color c) {
-    float l = lightness(red(c), green(c), blue(c));
     colorMode(HSB, 360, 100, 100);
     if (saturation(c) < tolerance && satDiff > 0) {
       return color(hue(c), saturation(c) + satDiff * (1 - (tolerance - saturation(c))/10.0), brightness(c));

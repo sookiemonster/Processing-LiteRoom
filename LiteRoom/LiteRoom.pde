@@ -8,6 +8,7 @@ ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
 
 Interactable selectedElement;
 boolean doOnce = false;
+int load = 0;
 
 PImage currentImage, edit;
 Display preview, editPreview;
@@ -15,6 +16,12 @@ Display preview, editPreview;
 int frames = 0;
 final int updateInterval = 2; 
 
+Kernel s = new Kernel(new float[][] {{0, -1, 0},
+                                     {-1, 3, 1},
+                                     {0, -1, 0}});
+PImage pSharp;
+boolean isSharpening = false;
+SharpnessSlider sharpen;
 
 void setup() {
   size(1920, 1080);
@@ -47,13 +54,29 @@ void draw() {
   drawElements();
   
   if (currentImage != null) {
+    if (load == 1) {
+      pSharp = edit.copy();
+      s.apply(edit, pSharp);
+      load++;
+    }
+    
     if (edit == null) {
       edit = currentImage.copy();
       edit.loadPixels();
+      load++;
     }
+    
     if (selectedElement != null && frames > updateInterval) {
       frames = 0;
       edit = currentImage.copy();
+      if (sharpen.getDiff() < 0) {
+        edit.filter(BLUR, abs(sharpen.getDiff()));
+        isSharpening = false;
+      } else if (sharpen.getDiff() > 0) {
+        isSharpening = true;
+      } else {
+        isSharpening = false;
+      }
       edit.loadPixels();
       adjust();
     }
@@ -124,7 +147,7 @@ void fileSelected(File selection) {
     println("Window was closed or the user hit cancel.");
   } else {
     String filename = "" + selection;
-    if (filename.indexOf(".gif") != -1 || filename.indexOf(".jpg") != -1 || filename.indexOf(".tga") != -1 || filename.indexOf(".png") != -1) {
+    if (filename.indexOf(".jpeg") != -1 || filename.indexOf(".jpg") != -1 || filename.indexOf(".tga") != -1 || filename.indexOf(".png") != -1) {
       preview = new Display(filename);
       currentImage = loadImage(filename);
     }
@@ -162,10 +185,16 @@ void mouseReleased() {
 }
 
 void adjust() {
+  colorMode(RGB, 256, 256, 256);
   for (int i = 0; i < edit.pixels.length; i++) {
+    if (isSharpening) {
+      edit.pixels[i] =lerpColor(edit.pixels[i], pSharp.pixels[i], sharpen.getDiff());
+    }
     for (Slider n : adjustments) {
       if (n.isChanged()) {
-        edit.pixels[i] = n.apply(edit.pixels[i]);
+        if (!(n instanceof SharpnessSlider)) {
+          edit.pixels[i] = n.apply(edit.pixels[i]);
+        }
       }
     }
   }
@@ -187,12 +216,13 @@ void drawAdjuster() {
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Shadows", 0.25, .5)); counter++;
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Blacks", 0.0, .25)); counter++;
   adjustments.add(new SaturationSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
+  adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
+  sharpen = (SharpnessSlider)adjustments.get(adjustments.size() - 1);
   
   for (Slider n : adjustments) {
     elements.add(n);
   }
   
   w.setHeight((counter - 1) * (adjustments.get(0).getHeight() + spacing) + spacing / 2);
-  
   
 }
