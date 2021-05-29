@@ -34,3 +34,7 @@ Jonathan - Started working the "zoom" partion of the navigator class.
 Jonathan - Got the image to display in the "zoom" box. Start working on the part that zooms in on the specific part of the image.
 
 Daniel - Added lightness, saturation, & sharpness sliders. Updated WindowObject & slider organization. 
+
+5/29/2021
+
+Daniel - Added hue slider to adjust hues of selected colors.
