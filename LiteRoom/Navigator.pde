@@ -1,14 +1,17 @@
 public class Navigator implements Interactable { //<>//
   protected final color primary = color(0, 0, 20);
-  private final int w = 268, h = 30, padding = 10;
+  private float w = 268, h = 30, padding = 10;
   private int saveCount = 0;
-  private float x, y;
+  private float x, y, mouseXCor, mouseYCor, c1, c2, c3, c4, cx1, cx2, cy1, cy2;
+  private int resizeW, resizeH, stableX, stableY;
   private String label;
-  private boolean pressed, hovering;
-  private boolean hasImage = false; //<>// //<>//
+  private boolean pressed, hovering, drawZoom;
+  private boolean hasImage = false; //<>//
+  private boolean zooming = false;
+  private boolean toggleZoom = false;
   private boolean error1 = false;
   private boolean error2 = false;
-  private PImage currentImage; 
+  private PImage currentImage, zoomImage, tempZoom; 
   
   private int incSave() {
     return saveCount++;
@@ -27,6 +30,23 @@ public class Navigator implements Interactable { //<>//
     return pressed;
   }
   
+  public void setImage(PImage img) {
+    currentImage = img;
+    hasImage = true;
+  }
+  
+  public void setZoom(PImage img, float x, float y, int resizeW, int resizeH) {
+    zoomImage = img;
+    this.resizeW = resizeW;
+    this.resizeH = resizeH;
+    cx1 = x;
+    cx2 = x + zoomImage.width;
+    cy1 = y;
+    cy2 = y + zoomImage.height;
+    zoomX = zoomImage.width / 2;
+    zoomY = zoomImage.height / 2;
+  }
+  
   public Navigator(float x, float y, String s, PImage picture) {
     this.x = x;
     this.y = padding+y;
@@ -40,14 +60,37 @@ public class Navigator implements Interactable { //<>//
     this.label = s;
   }
   
+  public Navigator(float x, float y, float w, float h, String s) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.label = s;
+  }
+  
+  public void newZoom(float x, float y, float w, float h) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+  }
+  
   public void display() {
     rectMode(CORNER);
     stroke(0,0,20);
     fill(0, 0, 40);
     handle();
-    rect(x, y, w, h);
-    label();
-    
+    drawZoom();
+    noStroke();
+    if (zooming == true && zoomImage != null) {
+      if (drawZoom) {
+        fill(0, 0, 40, 61);
+        drawZoomBox();
+        tempZoom = zoomImage.get((int)(mouseXCor-cx1),(int)(mouseYCor-cy1),(int)zoomX,(int)zoomY);
+        tempZoom.resize(resizeW, resizeH);
+        image(tempZoom, canvasX(), canvasY());
+      }
+    }
     if (currentImage != null && title().equals("Load Image") && (isHovering() || isPressed())) {
       error1 = true;
       errorMsg();
@@ -57,6 +100,61 @@ public class Navigator implements Interactable { //<>//
     } else {
       error1 = false;
       error2 = false;
+    }
+  }
+  
+  public void drawZoom() {
+    if (title().equals("Zoom Box")) {
+      noStroke();
+      fill(255, 0, 0, 0);
+      rect(x, y, w, h);
+    } else {
+      rect(x, y, w, h);
+      label();
+    }
+    if (currentImage != null) {
+      if (zoomImage != null && title().equals("Zoom Box") && !isHovering()) {
+        if (zooming == false) {
+          fill(120, 0, 0, 121);  
+          float smallerX = x + (zoomImage.width/4);
+          float smallerY = y + (zoomImage.height/4);
+          c1 = smallerX;
+          c2 = smallerX + zoomImage.width/2;
+          c3 = smallerY;
+          c4 = smallerY + zoomImage.height/2;
+          rect(smallerX, smallerY, zoomX, zoomY);
+        }  
+      } else if (zoomImage != null && title().equals("Zoom Box") && isHovering()) {
+         c1 = mouseX - zoomX/2;
+         c2 = mouseX + zoomX/2;
+         c3 = mouseY - zoomY/2;
+         c4 = mouseY + zoomY/2;
+         if (rectInRect(c1,cx1,c2,cx2,c3,cy1,c4,cy2)) {
+           if (mousePressed && toggleZoom == false) {
+            toggleZoom = true;
+            mouseXCor = mouseX - (zoomImage.width/4);
+            mouseYCor = mouseY - (zoomImage.height/4);
+            zooming = true;
+            drawZoom = true;
+           } else if (mousePressed && toggleZoom) {
+            mouseXCor = mouseX - (zoomImage.width/4);
+            mouseYCor = mouseY - (zoomImage.height/4);
+            stableX = (int)mouseXCor;
+            stableY = (int)mouseYCor;
+           } else if (mousePressed == false && toggleZoom == false) {
+            if (zooming == false) {
+              fill(120, 0, 0, 121);     
+            } else {
+              fill(255, 0, 0, 0);
+            }
+            rect(mouseX - (zoomX/2), mouseY - (zoomY/2), zoomX, zoomY);  
+           } else if (mousePressed == false && toggleZoom) {
+            fill(120, 0, 0, 121);
+            rect(mouseX - (zoomX/2), mouseY - (zoomY/2), zoomX, zoomY);  
+          }
+         }
+
+      }
     }
   }
 
@@ -80,6 +178,10 @@ public class Navigator implements Interactable { //<>//
     }
   }
   
+  public void drawZoomBox() {
+    rect(mouseXCor, mouseYCor, zoomX, zoomY);
+  }
+  
   public boolean imgPresent() {
     return hasImage;
   }
@@ -94,12 +196,19 @@ public class Navigator implements Interactable { //<>//
       selectImage(img);
     } else if (s.equals("Save Image")) {
       saveImage(img);
-    } 
+    } else if (s.equals("Clear Image")) {
+      zooming = false;
+      toggleZoom = false;
+    } else if (s.equals("Reset Zoom")) {
+      zoomImage = null;
+      tempZoom = null;
+    }
     clearMouse();
   }
   
   public void clear() {
     currentImage = null;
+    zoomImage = null;
   }
   
   public void selectImage(PImage img) {
@@ -112,7 +221,7 @@ public class Navigator implements Interactable { //<>//
   public void saveImage(PImage image) {
     if (currentImage != null) {
       int newX = (1344 - img.width)/2;
-      int newY = (1080 - img.height)/2;
+      int newY = (1054 - img.height)/2;
       PImage temp = get(288 + newX, 0 + newY, image.width, image.height);
       temp.save("image" + incSave() +".png");
     }
@@ -121,6 +230,10 @@ public class Navigator implements Interactable { //<>//
   public void clearMouse() {
     pressed = false;
     hovering = false;
+  }
+  
+  public boolean rectInRect(float c1, float cx1, float c2, float cx2, float c3, float cy1, float c4, float cy2){
+    return (c1 >= cx1 && c2 <= cx2 && c3 >= cy1 && c4 <= cy2);
   }
   
   public boolean inRect(float px, float py, float x1, float y1, float x2, float y2) {
@@ -139,6 +252,16 @@ public class Navigator implements Interactable { //<>//
       textAlign(CENTER, CENTER);
       text("Can't save without an image.", x+(w/2), y-(2*h));
     }
+  }
+  
+  public float canvasX() {
+    xCor = 288 + ((1344 - img.width)/2);
+    return xCor;
+  }
+  
+  public float canvasY() {
+    yCor = (1054 - img.height)/2;
+    return yCor;
   }
   
   public void label() {

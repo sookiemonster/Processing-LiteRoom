@@ -7,7 +7,7 @@ ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
 
 Interactable selectedElement;
-boolean doOnce = false;
+boolean doOnce = false, createZoom = false;
 int load = 0;
 
 PImage currentImage, edit, midstate, editstate;
@@ -32,6 +32,8 @@ void setup() {
   elements.add(new Navigator(frame.getPadding(), 966, "Load Image", currentImage));
   elements.add(new Navigator(frame.getPadding(), 1005, "Save Image", currentImage));
   elements.add(new Navigator(1920 - 288 + frame.getPadding(), 1005, "Clear Image"));
+  elements.add(new Navigator(11, 11, 267, 199, "Zoom Box"));
+  elements.add(new Navigator(frame.getPadding(), 927, "Reset Zoom"));
   
   setupLeft();
   setupRight();
@@ -53,7 +55,7 @@ void draw() {
   frame.display();      
   drawWindowObjects();
   drawElements();
-  
+
   if (currentImage != null) {
     if (load == 1) {
       pSharp = edit.copy();
@@ -145,6 +147,17 @@ void drawWindowObjects() {
       }
       float smallX = 11 + ((267 - editstate.width)/2);
       float smallY = 11 + ((199 - editstate.height)/2);
+      for (Interactable nav: elements) {
+        if (nav instanceof Navigator) {
+          ((Navigator)nav).setZoom(editstate, smallX, smallY, currentImage.width, currentImage.height);
+          if (((Navigator)nav).title().equals("Zoom Box")) {
+            if (createZoom == false) {
+              ((Navigator)nav).newZoom(smallX, smallY, editstate.width, editstate.height);
+              createZoom = true;
+            }
+          }
+        }
+      }
       image(editstate, smallX, smallY);
       image(midstate, preview.canvasX(), preview.canvasY());
     } else {
@@ -162,6 +175,11 @@ void fileSelected(File selection) {
     if (filename.indexOf(".jpeg") != -1 || filename.indexOf(".jpg") != -1 || filename.indexOf(".tga") != -1 || filename.indexOf(".png") != -1) {
       preview = new Display(filename);
       currentImage = loadImage(filename);
+      for (Interactable nav: elements) {
+        if (nav instanceof Navigator) {
+          ((Navigator)nav).setImage(currentImage);
+        }
+      }
     }
   }
 }
@@ -174,12 +192,15 @@ void drawElements() {
   for (Interactable n : elements) {
     if (n instanceof Navigator) {
       if (currentImage != null && ((Navigator)n).imgPresent() == false) {
-        ((Navigator)n).storeImage(currentImage);
+        ((Navigator)n).setImage(currentImage);
       }
       if (n.isPressed() && doOnce == false) { //<>//
+        ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         if (((Navigator)n).title().equals("Clear Image")) {
           currentImage = null;
           edit = null;
+          midstate = null;
+          editstate = null;
           preview.clear();
           editPreview.clear();
           for (Interactable nav: elements) {
@@ -187,8 +208,23 @@ void drawElements() {
               ((Navigator)nav).clear();
             }
           }
+          createZoom = false;
+        } 
+        if (((Navigator)n).title().equals("Clear Image")) {
+          currentImage = null;
+          edit = null;
+          midstate = null;
+          editstate = null;
+          preview.clear();
+          editPreview.clear();
+          for (Interactable nav: elements) {
+            if (nav instanceof Navigator) {
+              ((Navigator)nav).clear();
+            }
+          }
+          createZoom = false;
         }
-        ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
+
         doOnce = true;
       }  //<>//
     }
