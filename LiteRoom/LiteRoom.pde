@@ -57,17 +57,18 @@ void draw() {
   drawElements();
 
   if (currentImage != null) {
-    if (load == 1) {
+     if (edit == null) {
+      edit = currentImage.copy();
+      edit.loadPixels();
+      load++;
+    }
+    
+    if (load == 1 || pSharp == null ) {
       pSharp = edit.copy();
       s.apply(edit, pSharp);
       load++;
     }
     
-    if (edit == null) {
-      edit = currentImage.copy();
-      edit.loadPixels();
-      load++;
-    }
     
     if (selectedElement != null && frames > updateInterval) {
       frames = 0;
@@ -127,7 +128,7 @@ void drawWindowObjects() {
   }
   float rightX = frame.getSideBarWidth() + frame.getWidth() + frame.getPadding(); 
   for (WindowObject w : right) {
-    if (w.getX() != rightX) { // If the window is resized & the right elements aren't in the right position, move them
+    if (w.getX() != rightX) { 
       w.setX(rightX);
     }
     w.display();
@@ -200,7 +201,7 @@ void drawElements() {
       if (currentImage != null && ((Navigator)n).imgPresent() == false) {
         ((Navigator)n).setImage(currentImage);
       }
-      if (n.isPressed() && doOnce == false) { //<>//
+      if (n.isPressed() && doOnce == false) {
         ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         if (((Navigator)n).title().equals("Clear Image")) {
           currentImage = null;
@@ -209,6 +210,8 @@ void drawElements() {
           editstate = null;
           preview.clear();
           editPreview.clear();
+          
+          pSharp = null;
           for (Interactable nav: elements) {
             if (nav instanceof Navigator) {
               ((Navigator)nav).clear();
@@ -252,7 +255,7 @@ void adjust() {
       }
     }
   }
-  colorMode(HSB, 360, 100, 100);
+  colorMode(HSB, 360, 100, 100); 
 }
 
 void drawAdjuster() {

@@ -1,6 +1,6 @@
 public class TemperatureSlider extends Slider { 
   
-  private final color left = color(56, 90, 90), right = color(238, 90, 90);  //<>//
+  private final color left = color(56, 90, 90), right = color(238, 90, 90); 
   private int tempDiff;
   
   public TemperatureSlider(float x, float y) {
