@@ -10,7 +10,7 @@ Interactable selectedElement;
 boolean doOnce = false;
 int load = 0;
 
-PImage currentImage, edit;
+PImage currentImage, edit, midstate, editstate;
 Display preview, editPreview;
 
 int frames = 0;
@@ -132,9 +132,19 @@ void drawWindowObjects() {
   if (currentImage != null) {
     if ((currentImage.height > 1080) || (currentImage.width > 1920-288-288)) {
       currentImage = preview.resize(currentImage);
-    } 
+    }
     if (edit != null) {
-      editPreview.display();
+      editstate = edit.copy();
+      midstate = edit.copy();
+      if (editstate.width > 267) {
+        editstate.resize(267,0);
+      } else if(editstate.height > 199) {
+        editstate.resize(0,199);
+      }
+      float smallX = (267 - editstate.width)/2;
+      float smallY = (199 - editstate.height)/2;
+      image(editstate, 11 + smallX, 11 + smallY);
+      image(midstate, preview.canvasX(), preview.canvasY());
     } else {
       preview.display();
     }

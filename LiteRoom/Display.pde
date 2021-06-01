@@ -1,5 +1,5 @@
-private PImage img;
-private PImage smallImage;
+private PImage img, smallImage;
+private float xCor, yCor, zoomX, zoomY;
 
 public class Display {
   
@@ -10,17 +10,30 @@ public class Display {
   
   public Display(PImage newImage) {
     img = newImage;
-    smallImage = img;
+    smallImage = newImage;
   }
   
   public void display() {
-    int newX = (1344 - img.width)/2;
-    int newY = (1080 - img.height)/2;
-    image(img, 288 + newX, 0 + newY);
-    if (smallImage.width > 267 || smallImage.height > 199) {
-      resizeSmall();
-    }
-    smallDisplay();
+  }
+  
+  public float canvasX() {
+    xCor = 288 + ((1344 - img.width)/2);
+    return xCor;
+  }
+  
+  public float canvasY() {
+    yCor = (1080 - img.height)/2;
+    return yCor;
+  }
+  
+  public float getZoomX() {
+    zoomX = 11 + ((267 - smallImage.width)/2);
+    return zoomX;
+  }
+  
+  public float getZoomY() {
+    zoomY = 11 + ((199 - smallImage.height)/2);
+    return zoomY;
   }
   
   public void smallDisplay() {
@@ -38,12 +51,13 @@ public class Display {
     return img;
   }
   
-  public void resizeSmall() {
+  public PImage resizeSmall(PImage img) {
     if (smallImage.width > 267) {
       smallImage.resize(267,0);
     } else if (img.height > 199) {
       smallImage.resize(0,199);
     }
-    return;
+    return img;
   }
+  
 }
