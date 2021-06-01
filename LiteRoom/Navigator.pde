@@ -34,8 +34,10 @@ public class Navigator implements Interactable { //<>//
     currentImage = picture;
   }
   
-  public Navigator(PImage img) {
-    currentImage = img;
+  public Navigator(float x, float y, String s) {
+    this.x = x;
+    this.y = padding+y;
+    this.label = s;
   }
   
   public void display() {
@@ -92,8 +94,12 @@ public class Navigator implements Interactable { //<>//
       selectImage(img);
     } else if (s.equals("Save Image")) {
       saveImage(img);
-    }
+    } 
     clearMouse();
+  }
+  
+  public void clear() {
+    currentImage = null;
   }
   
   public void selectImage(PImage img) {

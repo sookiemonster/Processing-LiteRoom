@@ -43,10 +43,10 @@ public class Display {
   }
   
   public PImage resize(PImage img) {
-    while (img.width > 1920-280-280 || img.height >= 1080) {
+    while (img.width > 1920-280-280 || img.height > 1054) {
       if (img.width > 1920-288-288) {
         img.resize(1920-288-288,0);
-      } else if (img.height >= 1080) {
+      } else if (img.height > 1054) {
         img.resize(0,1054);
       }
     }
@@ -60,6 +60,11 @@ public class Display {
       smallImage.resize(0,199);
     }
     return img;
+  }
+  
+  public void clear() {
+    img = null;
+    smallImage = null;
   }
   
 }

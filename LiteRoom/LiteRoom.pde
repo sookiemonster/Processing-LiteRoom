@@ -31,6 +31,7 @@ void setup() {
   
   elements.add(new Navigator(frame.getPadding(), 966, "Load Image", currentImage));
   elements.add(new Navigator(frame.getPadding(), 1005, "Save Image", currentImage));
+  elements.add(new Navigator(1920 - 288 + frame.getPadding(), 1005, "Clear Image"));
   
   setupLeft();
   setupRight();
@@ -130,7 +131,7 @@ void drawWindowObjects() {
     w.display();
   }
   if (currentImage != null) {
-    if ((currentImage.height > 1080) || (currentImage.width > 1920-288-288)) {
+    if ((currentImage.height > 1054) || (currentImage.width > 1920-288-288)) {
       currentImage = preview.resize(currentImage);
     }
     if (edit != null) {
@@ -176,6 +177,17 @@ void drawElements() {
         ((Navigator)n).storeImage(currentImage);
       }
       if (n.isPressed() && doOnce == false) { //<>//
+        if (((Navigator)n).title().equals("Clear Image")) {
+          currentImage = null;
+          edit = null;
+          preview.clear();
+          editPreview.clear();
+          for (Interactable nav: elements) {
+            if (nav instanceof Navigator) {
+              ((Navigator)nav).clear();
+            }
+          }
+        }
         ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         doOnce = true;
       }  //<>//
