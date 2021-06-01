@@ -138,12 +138,13 @@ void drawWindowObjects() {
       midstate = edit.copy();
       if (editstate.width > 267) {
         editstate.resize(267,0);
-      } else if(editstate.height > 199) {
+      }
+      if (editstate.height > 199) {
         editstate.resize(0,199);
       }
-      float smallX = (267 - editstate.width)/2;
-      float smallY = (199 - editstate.height)/2;
-      image(editstate, 11 + smallX, 11 + smallY);
+      float smallX = 11 + ((267 - editstate.width)/2);
+      float smallY = 11 + ((199 - editstate.height)/2);
+      image(editstate, smallX, smallY);
       image(midstate, preview.canvasX(), preview.canvasY());
     } else {
       preview.display();
