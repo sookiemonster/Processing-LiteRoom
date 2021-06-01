@@ -1,4 +1,4 @@
-public class Navigator implements Interactable { //<>// //<>// //<>//
+public class Navigator implements Interactable { //<>//
   protected final color primary = color(0, 0, 20);
   private float w = 268, h = 30, padding = 10;
   private int saveCount = 0;

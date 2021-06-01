@@ -170,6 +170,10 @@ public abstract class Slider implements Interactable {
     return getPosition() != w / 2;
   }
   
+  public void clear() {
+    this.position = w / 2;
+  }
+  
   public abstract color apply(color c);
   
   //public abstract color apply(color c, float weight);

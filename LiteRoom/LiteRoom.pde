@@ -55,7 +55,8 @@ void draw() {
   frame.display();      
   drawWindowObjects();
   drawElements();
-
+  
+  
   if (currentImage != null) {
      if (edit == null) {
       edit = currentImage.copy();
@@ -81,12 +82,13 @@ void draw() {
       } else {
         isSharpening = false;
       }
+      checkPixels();
       edit.loadPixels();
       adjust();
     }
     editPreview = new Display(edit);
   }
-  
+    
   fill(0,0,100);
   textSize(20);
   textAlign(LEFT);
@@ -167,9 +169,7 @@ void drawWindowObjects() {
       }
       image(editstate, smallX, smallY);
       image(midstate, preview.canvasX(), preview.canvasY());
-    } else {
-      preview.display();
-    }
+    } 
   }
 }
 
@@ -210,8 +210,9 @@ void drawElements() {
           editstate = null;
           preview.clear();
           editPreview.clear();
-          
           pSharp = null;
+          clearAdjustments();
+          
           for (Interactable nav: elements) {
             if (nav instanceof Navigator) {
               ((Navigator)nav).clear();
@@ -242,10 +243,10 @@ void mouseReleased() {
 }
 
 void adjust() {
-  colorMode(RGB, 256, 256, 256);
-  for (int i = 0; i < pSharp.pixels.length; i++) {
+  for (int i = 0; i < edit.pixels.length; i++) {
     if (isSharpening) {
-      edit.pixels[i] =lerpColor(edit.pixels[i], pSharp.pixels[i], sharpen.getDiff());
+      colorMode(RGB, 256, 256, 256);
+      edit.pixels[i] = lerpColor(edit.pixels[i], pSharp.pixels[i], map(sharpen.getDiff(), 0, 2, 0, 1));
     }
     for (Slider n : adjustments) {
       if (n.isChanged()) {
@@ -288,4 +289,17 @@ void drawAdjuster() {
   
   w.setHeight((counter - 1) * (adjustments.get(0).getHeight() + spacing) + spacing / 2);
   
+}
+
+void clearAdjustments() {
+  for (Slider n : adjustments) {
+    n.clear();
+  }
+}
+
+void checkPixels() {
+  if (edit.pixels.length != pSharp.pixels.length) {
+    pSharp = edit.copy();
+    s.apply(edit, pSharp);
+  }
 }
