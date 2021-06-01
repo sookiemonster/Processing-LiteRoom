@@ -3,15 +3,16 @@ public class Navigator implements Interactable { //<>//
   private float w = 268, h = 30, padding = 10;
   private int saveCount = 0;
   private float x, y, mouseXCor, mouseYCor, c1, c2, c3, c4, cx1, cx2, cy1, cy2;
-  private int resizeW, resizeH, stableX, stableY;
+  private int resizeW, resizeH;
+  private int adsf = 0;
   private String label;
-  private boolean pressed, hovering, drawZoom;
+  private boolean pressed, hovering, drawZoom, zoomQ;
   private boolean hasImage = false; //<>//
   private boolean zooming = false;
   private boolean toggleZoom = false;
   private boolean error1 = false;
   private boolean error2 = false;
-  private PImage currentImage, zoomImage, tempZoom; 
+  private PImage currentImage, zoomImage, tempZoom, edit; 
   
   private int incSave() {
     return saveCount++;
@@ -30,21 +31,32 @@ public class Navigator implements Interactable { //<>//
     return pressed;
   }
   
+  public void addEditImage(PImage img) {
+    edit = img;
+  }
+  
   public void setImage(PImage img) {
     currentImage = img;
     hasImage = true;
   }
   
-  public void setZoom(PImage img, float x, float y, int resizeW, int resizeH) {
-    zoomImage = img;
-    this.resizeW = resizeW;
-    this.resizeH = resizeH;
-    cx1 = x;
-    cx2 = x + zoomImage.width;
-    cy1 = y;
-    cy2 = y + zoomImage.height;
-    zoomX = zoomImage.width / 2;
-    zoomY = zoomImage.height / 2;
+  public void setZoom(PImage img, float x, float y, int resizeW, int resizeH, boolean continueZoom) {
+    println(continueZoom);
+    zoomQ = continueZoom;
+    if (continueZoom) {
+      zoomImage = img;
+      this.resizeW = resizeW;
+      this.resizeH = resizeH;
+      cx1 = x;
+      cx2 = x + zoomImage.width;
+      cy1 = y;
+      cy2 = y + zoomImage.height;
+      zoomX = zoomImage.width / 2;
+      zoomY = zoomImage.height / 2;
+    } else {
+      drawZoom = false;
+    }
+
   }
   
   public Navigator(float x, float y, String s, PImage picture) {
@@ -75,6 +87,10 @@ public class Navigator implements Interactable { //<>//
     this.h = h;
   }
   
+  public boolean returnZoom() {
+    return drawZoom;
+  }
+  
   public void display() {
     rectMode(CORNER);
     stroke(0,0,20);
@@ -82,6 +98,11 @@ public class Navigator implements Interactable { //<>//
     handle();
     drawZoom();
     noStroke();
+    if (zoomQ == false && zoomImage != null && title().equals("Zoom Box") && isHovering()) {
+      drawZoom = true;
+    } 
+     adsf = adsf + 1;
+     println(drawZoom + " " + adsf);
     if (zooming == true && zoomImage != null) {
       if (drawZoom) {
         fill(0, 0, 40, 61);
@@ -89,7 +110,10 @@ public class Navigator implements Interactable { //<>//
         tempZoom = zoomImage.get((int)(mouseXCor-cx1),(int)(mouseYCor-cy1),(int)zoomX,(int)zoomY);
         tempZoom.resize(resizeW, resizeH);
         image(tempZoom, canvasX(), canvasY());
+      } else {
+        image(edit, canvasX(), canvasY());
       }
+
     }
     if (currentImage != null && title().equals("Load Image") && (isHovering() || isPressed())) {
       error1 = true;
@@ -139,8 +163,7 @@ public class Navigator implements Interactable { //<>//
            } else if (mousePressed && toggleZoom) {
             mouseXCor = mouseX - (zoomImage.width/4);
             mouseYCor = mouseY - (zoomImage.height/4);
-            stableX = (int)mouseXCor;
-            stableY = (int)mouseYCor;
+            drawZoom = true;
            } else if (mousePressed == false && toggleZoom == false) {
             if (zooming == false) {
               fill(120, 0, 0, 121);     
@@ -156,6 +179,10 @@ public class Navigator implements Interactable { //<>//
 
       }
     }
+  }
+  
+  public boolean doWeDraw() {
+    return drawZoom;
   }
 
   public void handle() {
@@ -200,8 +227,8 @@ public class Navigator implements Interactable { //<>//
       zooming = false;
       toggleZoom = false;
     } else if (s.equals("Reset Zoom")) {
-      zoomImage = null;
-      tempZoom = null;
+      //zooming = false;
+      //toggleZoom = false;
     }
     clearMouse();
   }
@@ -209,6 +236,7 @@ public class Navigator implements Interactable { //<>//
   public void clear() {
     currentImage = null;
     zoomImage = null;
+    tempZoom = null;
   }
   
   public void selectImage(PImage img) {

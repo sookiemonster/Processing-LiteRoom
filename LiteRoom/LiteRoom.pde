@@ -7,7 +7,7 @@ ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
 
 Interactable selectedElement;
-boolean doOnce = false, createZoom = false;
+boolean doOnce = false, createZoom = false, toZoom = true;
 int load = 0;
 
 PImage currentImage, edit, midstate, editstate;
@@ -21,7 +21,7 @@ Kernel s = new Kernel(new float[][] {{0, -1, 0},
                                      {0, -1, 0}});
 PImage pSharp;
 boolean isSharpening = false;
-SharpnessSlider sharpen;
+SharpnessSlider sharpen; 
 
 void setup() {
   size(1920, 1080);
@@ -33,7 +33,7 @@ void setup() {
   elements.add(new Navigator(frame.getPadding(), 1005, "Save Image", currentImage));
   elements.add(new Navigator(1920 - 288 + frame.getPadding(), 1005, "Clear Image"));
   elements.add(new Navigator(11, 11, 267, 199, "Zoom Box"));
-  elements.add(new Navigator(frame.getPadding(), 927, "Reset Zoom"));
+  elements.add(new Navigator(frame.getPadding(), 888, "Reset Zoom"));
   
   setupLeft();
   setupRight();
@@ -147,9 +147,15 @@ void drawWindowObjects() {
       }
       float smallX = 11 + ((267 - editstate.width)/2);
       float smallY = 11 + ((199 - editstate.height)/2);
+          for (Interactable nav: elements) {
+        if (nav instanceof Navigator) {
+          
+        }
+      }
       for (Interactable nav: elements) {
         if (nav instanceof Navigator) {
-          ((Navigator)nav).setZoom(editstate, smallX, smallY, currentImage.width, currentImage.height);
+          ((Navigator)nav).setZoom(editstate, smallX, smallY, currentImage.width, currentImage.height, toZoom);
+          ((Navigator)nav).addEditImage(midstate);
           if (((Navigator)nav).title().equals("Zoom Box")) {
             if (createZoom == false) {
               ((Navigator)nav).newZoom(smallX, smallY, editstate.width, editstate.height);
@@ -210,21 +216,10 @@ void drawElements() {
           }
           createZoom = false;
         } 
-        if (((Navigator)n).title().equals("Clear Image")) {
-          currentImage = null;
-          edit = null;
-          midstate = null;
-          editstate = null;
-          preview.clear();
-          editPreview.clear();
-          for (Interactable nav: elements) {
-            if (nav instanceof Navigator) {
-              ((Navigator)nav).clear();
-            }
+        if (((Navigator)n).title().equals("Reset Zoom")) {
+            toZoom = false;
           }
           createZoom = false;
-        }
-
         doOnce = true;
       }  //<>//
     }
