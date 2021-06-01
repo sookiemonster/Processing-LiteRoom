@@ -7,10 +7,10 @@ ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
 
 Interactable selectedElement;
-boolean doOnce = false;
+boolean doOnce = false, createZoom = false, toZoom = true;
 int load = 0;
 
-PImage currentImage, edit;
+PImage currentImage, edit, midstate, editstate;
 Display preview, editPreview;
 
 int frames = 0;
@@ -21,7 +21,7 @@ Kernel s = new Kernel(new float[][] {{0, -1, 0},
                                      {0, -1, 0}});
 PImage pSharp;
 boolean isSharpening = false;
-SharpnessSlider sharpen;
+SharpnessSlider sharpen; 
 
 void setup() {
   size(1920, 1080);
@@ -31,6 +31,9 @@ void setup() {
   
   elements.add(new Navigator(frame.getPadding(), 966, "Load Image", currentImage));
   elements.add(new Navigator(frame.getPadding(), 1005, "Save Image", currentImage));
+  elements.add(new Navigator(1920 - 288 + frame.getPadding(), 1005, "Clear Image"));
+  elements.add(new Navigator(11, 11, 267, 199, "Zoom Box"));
+  elements.add(new Navigator(frame.getPadding(), 888, "Reset Zoom"));
   
   setupLeft();
   setupRight();
@@ -52,7 +55,7 @@ void draw() {
   frame.display();      
   drawWindowObjects();
   drawElements();
-  
+
   if (currentImage != null) {
     if (load == 1) {
       pSharp = edit.copy();
@@ -130,11 +133,39 @@ void drawWindowObjects() {
     w.display();
   }
   if (currentImage != null) {
-    if ((currentImage.height > 1080) || (currentImage.width > 1920-288-288)) {
+    if ((currentImage.height > 1054) || (currentImage.width > 1920-288-288)) {
       currentImage = preview.resize(currentImage);
-    } 
+    }
     if (edit != null) {
-      editPreview.display();
+      editstate = edit.copy();
+      midstate = edit.copy();
+      if (editstate.width > 267) {
+        editstate.resize(267,0);
+      }
+      if (editstate.height > 199) {
+        editstate.resize(0,199);
+      }
+      float smallX = 11 + ((267 - editstate.width)/2);
+      float smallY = 11 + ((199 - editstate.height)/2);
+          for (Interactable nav: elements) {
+        if (nav instanceof Navigator) {
+          
+        }
+      }
+      for (Interactable nav: elements) {
+        if (nav instanceof Navigator) {
+          ((Navigator)nav).setZoom(editstate, smallX, smallY, currentImage.width, currentImage.height, toZoom);
+          ((Navigator)nav).addEditImage(midstate);
+          if (((Navigator)nav).title().equals("Zoom Box")) {
+            if (createZoom == false) {
+              ((Navigator)nav).newZoom(smallX, smallY, editstate.width, editstate.height);
+              createZoom = true;
+            }
+          }
+        }
+      }
+      image(editstate, smallX, smallY);
+      image(midstate, preview.canvasX(), preview.canvasY());
     } else {
       preview.display();
     }
@@ -150,6 +181,11 @@ void fileSelected(File selection) {
     if (filename.indexOf(".jpeg") != -1 || filename.indexOf(".jpg") != -1 || filename.indexOf(".tga") != -1 || filename.indexOf(".png") != -1) {
       preview = new Display(filename);
       currentImage = loadImage(filename);
+      for (Interactable nav: elements) {
+        if (nav instanceof Navigator) {
+          ((Navigator)nav).setImage(currentImage);
+        }
+      }
     }
   }
 }
@@ -162,10 +198,28 @@ void drawElements() {
   for (Interactable n : elements) {
     if (n instanceof Navigator) {
       if (currentImage != null && ((Navigator)n).imgPresent() == false) {
-        ((Navigator)n).storeImage(currentImage);
+        ((Navigator)n).setImage(currentImage);
       }
       if (n.isPressed() && doOnce == false) { //<>//
         ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
+        if (((Navigator)n).title().equals("Clear Image")) {
+          currentImage = null;
+          edit = null;
+          midstate = null;
+          editstate = null;
+          preview.clear();
+          editPreview.clear();
+          for (Interactable nav: elements) {
+            if (nav instanceof Navigator) {
+              ((Navigator)nav).clear();
+            }
+          }
+          createZoom = false;
+        } 
+        if (((Navigator)n).title().equals("Reset Zoom")) {
+            toZoom = false;
+          }
+          createZoom = false;
         doOnce = true;
       }  //<>//
     }
