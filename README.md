@@ -22,3 +22,23 @@ Jonathan - Created a Navigator class as well as two buttons necessary for loadin
 Jonathan - Enhanced the load and saving buttons by adding error messages when the user performs an invalid action. Also centered the image when loading the image.
 
 Daniel - Added HSL to RGB conversions for sliders & added label option to WindowObjects. Fixed merge conflicts between jBranch & dBranch and updated demo & main branches.
+
+5/26/2021 
+
+Daniel - Optimized draw() a lot, increasing the fps from roughly 9fps to minimum of 24fps for large (4000 x 2000) images. Added a update interval which only calls draw() every specified number of frames. Added better visuals to siders to more effectively convey their function.  
+
+Jonathan - Started working the "zoom" partion of the navigator class.
+
+5/27/2021
+
+Jonathan - Got the image to display in the "zoom" box. Start working on the part that zooms in on the specific part of the image.
+
+Daniel - Added lightness, saturation, & sharpness sliders. Updated WindowObject & slider organization. 
+
+5/29/2021
+
+Daniel - Added hue slider to adjust hues of selected colors.
+
+5/31/2021
+
+Jonathan - Improved zoom box thing and making sure it runs. Still kind of a work in progress...

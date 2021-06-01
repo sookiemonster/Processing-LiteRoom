@@ -1,11 +1,11 @@
-public class Navigator implements Interactable {
+public class Navigator implements Interactable { //<>//
   protected final color primary = color(0, 0, 20);
   private final int w = 268, h = 30, padding = 10;
   private int saveCount = 0;
   private float x, y;
   private String label;
   private boolean pressed, hovering;
-  private boolean hasImage = false; //<>//
+  private boolean hasImage = false; //<>// //<>//
   private boolean error1 = false;
   private boolean error2 = false;
   private PImage currentImage; 
@@ -45,6 +45,7 @@ public class Navigator implements Interactable {
     handle();
     rect(x, y, w, h);
     label();
+    
     if (currentImage != null && title().equals("Load Image") && (isHovering() || isPressed())) {
       error1 = true;
       errorMsg();
@@ -71,12 +72,19 @@ public class Navigator implements Interactable {
     }
   }
   
+  public void zoomBox() {
+    if (imgPresent() == true) {
+      return;
+    }
+  }
+  
   public boolean imgPresent() {
     return hasImage;
   }
   
   public void storeImage(PImage img) {
     currentImage = img;
+    hasImage = true;
   }
   
   public void buttonFunction(String s, PImage img) {
@@ -96,7 +104,7 @@ public class Navigator implements Interactable {
   }
   
   public void saveImage(PImage image) {
-    if (image != null) {
+    if (currentImage != null) {
       int newX = (1344 - img.width)/2;
       int newY = (1080 - img.height)/2;
       PImage temp = get(288 + newX, 0 + newY, image.width, image.height);
