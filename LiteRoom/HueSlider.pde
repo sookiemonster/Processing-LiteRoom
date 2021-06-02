@@ -1,7 +1,7 @@
 public class HueSlider extends Slider {
   
   private final color left;
-  private final float margin = 50, range = 30, change = 75;
+  private final float margin = 20, range = 30, change = 30;
   private float hueDiff, minHue, maxHue;
   private boolean on;
   
@@ -29,7 +29,7 @@ public class HueSlider extends Slider {
   
   public void display() {
     if (on) {
-      super.gradientWrap(left, 100);
+      super.gradientWrap(left, 75);
       super.display();
     }
   }
@@ -49,6 +49,10 @@ public class HueSlider extends Slider {
     if (minHue < maxHue) {
       if (minHue <= h && h <= maxHue) {
         return color(wrapColor((h + hueDiff) % 360), saturation(c), brightness(c));
+      } else if (abs(h - minHue) <= margin) {
+        return color(wrapColor((h + hueDiff * calcMargin(abs(h - minHue))) % 360), saturation(c), brightness(c));
+      } else if (abs(maxHue - h) <= margin) {
+        return color(wrapColor((h + hueDiff * calcMargin(abs(maxHue - h))) % 360), saturation(c), brightness(c));
       }
     } else {
       if (minHue <= h || maxHue >= h) {
