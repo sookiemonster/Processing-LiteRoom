@@ -1,6 +1,6 @@
 public class HSBContainer extends WindowObject {
  
-  public ArrayList<HueSlider[]> sliders = new ArrayList<HueSlider[]>();
+  public ArrayList<Slider[]> sliders = new ArrayList<Slider[]>();
   private int[] hues = new int[]{
     0,   // Reds
     30,  // Oranges
@@ -18,7 +18,8 @@ public class HSBContainer extends WindowObject {
   public HSBContainer(float x, float y) {
     super(x, y, 150, "HSB Adjustments");
     for (int i : hues) {
-      sliders.add(new HueSlider[]{new HueSlider(x + 70, this.getInteriorY() + boxHeight, i, false)});
+      sliders.add(new Slider[]{new HueSlider(x + 100, this.getInteriorY() + boxHeight, i, false), 
+        new HBSlider(x + 100, this.getInteriorY() + boxHeight + this.getHeight() + padding * 2, i, true)});
     }
     switchSelected();
   }
@@ -47,7 +48,7 @@ public class HSBContainer extends WindowObject {
   private void updateSliderLocation() {
     for (Slider[] arr : sliders) {
       for (int i = 0; i < arr.length; i++) {
-        arr[i].setY(this.getInteriorY() + boxHeight + (padding * 2) + (i * arr[i].getHeight()));
+        arr[i].setY(this.getInteriorY() + boxHeight + (padding * 2) + (i * arr[i].getHeight() * 3));
       }
     }
   }
@@ -69,7 +70,7 @@ public class HSBContainer extends WindowObject {
   
   private void switchSelected() {
     for (int i = 0; i < sliders.size(); i++) {
-      for (HueSlider n : sliders.get(i)) {
+      for (Slider n : sliders.get(i)) {
         if (i == selectedIndex) {
           n.setOn(true);
         } else {

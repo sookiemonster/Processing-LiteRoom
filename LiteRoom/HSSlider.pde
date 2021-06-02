@@ -1,18 +1,19 @@
-public class HueSlider extends Slider {
+public class HBSlider extends Slider {
   
-  private final color left;
+  private final color left, right;
   private final float margin = 20, range = 30, change = 30;
-  private float hueDiff, minHue, maxHue;
+  private float satDiff, minHue, maxHue;
   
-  public HueSlider(float x, float y, float target, boolean on) {
-    super(x, y, "Hue");
+  public HBSlider(float x, float y, float target, boolean on) {
+    super(x, y, "Saturation");
     this.on = on;
+    this.left = color(target, 10, 10);
+    this.right = color(target, 99, 99);
     
     float tempMin = target - change;
     if (tempMin < 0) {
       tempMin = 360 - abs(tempMin);
     }
-    this.left = color(tempMin, 100, 100);
     
     this.minHue = wrapColor(target - range);
     this.maxHue = (target + range) % 360;
@@ -20,14 +21,14 @@ public class HueSlider extends Slider {
   
   public void display() {
     if (on) {
-      super.gradientWrap(left, 75);
+      super.gradient2(left, right);
       super.display();
     }
   }
   
   public boolean drag() {
     if (on) {
-      hueDiff = map(this.getPosition() - 75.0, -75, 75, -1 * change, change);
+      satDiff = this.getPosition() - 75.0;
       return super.drag();
     }
     return false;
@@ -39,22 +40,26 @@ public class HueSlider extends Slider {
     
     if (minHue < maxHue) {
       if (minHue <= h && h <= maxHue) {
-        return color(wrapColor((h + hueDiff) % 360), saturation(c), brightness(c));
+        return color(h, saturation(c) + satDiff * calcTolerance(saturation(c)), brightness(c));
       } else if (abs(h - minHue) <= margin) {
-        return color(wrapColor((h + hueDiff * calcMargin(abs(h - minHue))) % 360), saturation(c), brightness(c));
+        return color(h, saturation(c) + (satDiff * calcMargin(abs(h - minHue))) * calcTolerance(saturation(c)), brightness(c));
       } else if (abs(maxHue - h) <= margin) {
-        return color(wrapColor((h + hueDiff * calcMargin(abs(maxHue - h))) % 360), saturation(c), brightness(c));
-      }
+        return color(h, saturation(c) + (satDiff * calcMargin(abs(maxHue - h))) * calcTolerance(saturation(c)), brightness(c));
+      } 
     } else {
       if (minHue <= h || maxHue >= h) {
-        return color(wrapColor((h + hueDiff) % 360), saturation(c), brightness(c));
+        return color(h, saturation(c) + satDiff * calcTolerance(saturation(c)), brightness(c));
       } else if (abs(h - minHue) <= margin) {
-        return color(wrapColor((h + hueDiff * calcMargin(abs(h - minHue))) % 360), saturation(c), brightness(c));
+        return color(h, saturation(c) + (satDiff * calcMargin(abs(h - minHue))) * calcTolerance(saturation(c)), brightness(c));
       } else if (abs(maxHue - h) <= margin) {
-        return color(wrapColor((h + hueDiff * calcMargin(abs(maxHue - h))) % 360), saturation(c), brightness(c));
-      }
+        return color(h, saturation(c) + (satDiff * calcMargin(abs(maxHue - h))) * calcTolerance(saturation(c)), brightness(c));
+      } 
     }
     return c;
+  }
+  
+  private float calcTolerance(float s) {
+    return s/100;
   }
   
   private float calcMargin(float n) {
