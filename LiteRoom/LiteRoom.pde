@@ -57,6 +57,10 @@ void draw() {
   drawElements();
 
   if (currentImage != null) {
+    while ((currentImage.width > 1920-280-280 || currentImage.height > 1054)) {
+      currentImage = preview.resize(currentImage);
+    }
+    
     if (load == 1) {
       pSharp = edit.copy();
       s.apply(edit, pSharp);
