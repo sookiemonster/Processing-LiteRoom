@@ -1,11 +1,13 @@
 public class HueSlider extends Slider {
   
   private final color left;
-  private final float margin = 10, range = 15, change = 75;
+  private final float margin = 50, range = 30, change = 75;
   private float hueDiff, minHue, maxHue;
+  private boolean on;
   
-  public HueSlider(float x, float y, float target) {
+  public HueSlider(float x, float y, float target, boolean on) {
     super(x, y, "Hue");
+    this.on = on;
     
     float tempMin = target - change;
     if (tempMin < 0) {
@@ -17,14 +19,27 @@ public class HueSlider extends Slider {
     this.maxHue = (target + range) % 360;
   }
   
+  public void toggleOn() {
+    on = !on;
+  }
+  
+  public void setOn(boolean b) {
+    this.on = b;
+  }
+  
   public void display() {
-    super.gradientWrap(left, 100);
-    super.display();
+    if (on) {
+      super.gradientWrap(left, 100);
+      super.display();
+    }
   }
   
   public boolean drag() {
-    hueDiff = map(this.getPosition() - 75.0, -75, 75, -1 * change, change);
-    return super.drag();
+    if (on) {
+      hueDiff = map(this.getPosition() - 75.0, -75, 75, -1 * change, change);
+      return super.drag();
+    }
+    return false;
   }
   
   public color apply(color c) {

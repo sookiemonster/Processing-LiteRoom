@@ -16,6 +16,14 @@ public abstract class Slider implements Interactable {
     position = w / 2;
   }
   
+  public void setX(float n) {
+    this.x = n;
+  }
+  
+  public void setY(float n) {
+    this.y = n;
+  }
+  
   public void display() {
     rectMode(CORNER);
     outline();
