@@ -49,7 +49,7 @@ public class HSBContainer extends WindowObject {
   private void updateSliderLocation() {
     for (Slider[] arr : sliders) {
       for (int i = 0; i < arr.length; i++) {
-        arr[i].setY(this.getInteriorY() + boxHeight + (padding * 2) + (i * arr[i].getHeight() * 3));
+        arr[i].setY(this.getInteriorY() + boxHeight + (padding * 2.5) + (i * arr[i].getHeight() * 4));
       }
     }
   }

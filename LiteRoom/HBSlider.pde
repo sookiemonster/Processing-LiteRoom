@@ -56,11 +56,9 @@ public class HBSlider extends Slider {
       } 
       else if (abs(h - minHue) <= margin) {
         float tempMargin = brightenMargin(abs(h - minHue), s);
-        println(tempMargin);
         return color(red(c) * tempMargin, green(c) * tempMargin, blue(c) * tempMargin);
       } else if (abs(maxHue - h) <= margin) {
         float tempMargin = brightenMargin(abs(maxHue - h), s);
-        println(tempMargin);
         return color(red(c) * tempMargin, green(c) * tempMargin, blue(c) * tempMargin);
       } 
     }
