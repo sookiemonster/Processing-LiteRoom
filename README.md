@@ -46,3 +46,7 @@ Jonathan - Improved zoom box thing and making sure it runs. Still kind of a work
 6/1/2021 
 
 Daniel - Added HSBContainer and fixed bug where clearing the image didn't work and caused only some pixels to be adjusted in the next image selected to be edited.
+
+6/2/2021 
+
+Daniel - Added HSSlider & HSB Slider to adjust the saturation & brightness of a range of hues specified in HSBContainer.
