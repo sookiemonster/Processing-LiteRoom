@@ -60,6 +60,10 @@ void draw() {
   
   
   if (currentImage != null) {
+    if ((currentImage.height > 1054) || (currentImage.width > 1920-288-288)) {
+      currentImage = preview.resize(currentImage);
+    }
+    
      if (edit == null) {
       edit = currentImage.copy();
       edit.loadPixels();
@@ -160,6 +164,9 @@ void drawWindowObjects() {
       }
       for (Interactable nav: elements) {
         if (nav instanceof Navigator) {
+          //if (toZoom == false) {
+          //  toZoom = ((Navigator)nav).falseZoom();
+          //}
           ((Navigator)nav).setZoom(editstate, smallX, smallY, currentImage.width, currentImage.height, toZoom);
           ((Navigator)nav).addEditImage(midstate);
           if (((Navigator)nav).title().equals("Zoom Box")) {
@@ -221,10 +228,14 @@ void drawElements() {
               ((Navigator)nav).clear();
             }
           }
-          createZoom = false;
         } 
         if (((Navigator)n).title().equals("Reset Zoom")) {
-            toZoom = false;
+            //toZoom = false;
+            for (Interactable nav: elements) {
+              if (nav instanceof Navigator) {
+                ((Navigator)nav).clearZoom();
+              }
+            }
           }
           createZoom = false;
         doOnce = true;

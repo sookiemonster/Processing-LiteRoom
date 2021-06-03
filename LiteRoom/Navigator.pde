@@ -90,6 +90,10 @@ public class Navigator implements Interactable { //<>// //<>//
     return drawZoom;
   }
   
+  public boolean falseZoom() {
+    return (drawZoom && zooming && toggleZoom);
+  }
+  
   public void display() {
     rectMode(CORNER);
     stroke(0,0,20);
@@ -97,10 +101,6 @@ public class Navigator implements Interactable { //<>// //<>//
     handle();
     drawZoom();
     noStroke();
-    if (zoomQ == false && zoomImage != null && title().equals("Zoom Box") && isHovering()) {
-      drawZoom = true;
-    } 
-     adsf = adsf + 1;
     if (zooming == true && zoomImage != null) {
       if (drawZoom) {
         fill(0, 0, 40, 61);
@@ -225,10 +225,15 @@ public class Navigator implements Interactable { //<>// //<>//
       zooming = false;
       toggleZoom = false;
     } else if (s.equals("Reset Zoom")) {
-      //zooming = false;
-      //toggleZoom = false;
+      zooming = false;
+      toggleZoom = false;
     }
     clearMouse();
+  }
+  
+  public void clearZoom() {
+    zooming = false;
+    toggleZoom = false;
   }
   
   public void clear() {
