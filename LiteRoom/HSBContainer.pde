@@ -19,7 +19,8 @@ public class HSBContainer extends WindowObject {
     super(x, y, 150, "HSB Adjustments");
     for (int i : hues) {
       sliders.add(new Slider[]{new HueSlider(x + 100, this.getInteriorY() + boxHeight, i, false), 
-        new HBSlider(x + 100, this.getInteriorY() + boxHeight + this.getHeight() + padding * 2, i, true)});
+        new HSSlider(x + 100, this.getInteriorY() + boxHeight + this.getHeight() + padding * 2, i, true),
+        new HBSlider(x + 100, this.getInteriorY() + boxHeight + this.getHeight() * 2 + padding * 2, i, true)});
     }
     switchSelected();
   }

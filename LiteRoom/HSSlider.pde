@@ -1,10 +1,10 @@
-public class HBSlider extends Slider {
+public class HSSlider extends Slider {
   
   private final color left, right;
   private final float margin = 20, range = 30, change = 30;
   private float satDiff, minHue, maxHue;
   
-  public HBSlider(float x, float y, float target, boolean on) {
+  public HSSlider(float x, float y, float target, boolean on) {
     super(x, y, "Saturation");
     this.on = on;
     this.left = color(target, 10, 10);
