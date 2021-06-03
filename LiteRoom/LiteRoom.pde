@@ -60,19 +60,9 @@ void draw() {
   
   
   if (currentImage != null) {
-<<<<<<< HEAD
-    while ((currentImage.width > 1920-280-280 || currentImage.height > 1054)) {
-      currentImage = preview.resize(currentImage);
-    }
-    
-    if (load == 1) {
-      pSharp = edit.copy();
-      s.apply(edit, pSharp);
-=======
      if (edit == null) {
       edit = currentImage.copy();
       edit.loadPixels();
->>>>>>> main
       load++;
     }
     
