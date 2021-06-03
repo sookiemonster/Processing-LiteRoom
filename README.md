@@ -42,3 +42,7 @@ Daniel - Added hue slider to adjust hues of selected colors.
 5/31/2021
 
 Jonathan - Improved zoom box thing and making sure it runs. Still kind of a work in progress...
+
+6/1/2021 
+
+Daniel - Added HSBContainer and fixed bug where clearing the image didn't work and caused only some pixels to be adjusted in the next image selected to be edited.
