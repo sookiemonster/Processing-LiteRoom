@@ -7,6 +7,7 @@ ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
 
 HSBContainer HSBObject;
+VignetteContainer VignetteObject;
 
 Interactable selectedElement;
 boolean doOnce = false, createZoom = false, toZoom = true;
@@ -116,8 +117,12 @@ void setupRight() {
   float rightX = frame.getSideBarWidth() + frame.getWidth() + frame.getPadding();
   right.add(new WindowObject(rightX, frame.getPadding(), 200, "Histogram"));
   right.add(new WindowObject(rightX, 0, 500, "Adjustments"));
-  right.add(new HSBContainer(rightX, 0));
-  HSBObject = (HSBContainer)right.get(right.size() - 1);
+  
+  HSBObject = new HSBContainer(rightX, 0);
+  right.add(HSBObject);
+  
+  VignetteObject = new VignetteContainer(rightX, 0);
+  right.add(VignetteObject);
 }
 
 // Move Window Objects in relation to each other (subsequent objects are padding px below each other)
@@ -264,9 +269,12 @@ void adjust() {
     }
     for (Slider n : adjustments) {
       if (n.isChanged()) {
-        if (!(n instanceof SharpnessSlider)) {
+        if (n instanceof VBSlider) {
+          VBSlider b = (VBSlider)n;
+          edit.pixels[i] = b.apply(i, edit.pixels[i], edit.width, edit.height);
+        } else if (!(n instanceof SharpnessSlider)) {
           edit.pixels[i] = n.apply(edit.pixels[i]);
-        }
+        } 
       }
     }
   }
@@ -290,12 +298,15 @@ void drawAdjuster() {
   adjustments.add(new SaturationSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   sharpen = (SharpnessSlider)adjustments.get(adjustments.size() - 1);
-  
+   
   for (Slider[] arr : HSBObject.sliders) {
     for (Slider n : arr) {
       adjustments.add(n);
-      elements.add(n);
     }
+  }
+  
+  for (Slider n : VignetteObject.sliders) {
+    adjustments.add(n);
   }
   
   for (Slider n : adjustments) {

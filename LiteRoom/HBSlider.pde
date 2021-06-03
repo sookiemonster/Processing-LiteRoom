@@ -2,7 +2,7 @@ public class HBSlider extends Slider {
   
   private final color left = color(0,0,0), right = color(0, 0, 100);
   private final float margin = 25, range = 30, change = 30;
-  private float brightFactor, diff, minHue, maxHue;
+  private float diff, minHue, maxHue;
   
   public HBSlider(float x, float y, float target, boolean on) {
     super(x, y, "Brightness");
@@ -27,7 +27,6 @@ public class HBSlider extends Slider {
   public boolean drag() {
     if (on) {
       diff = (this.getPosition() - 75.0) / w;
-      brightFactor = diff + 1;
       return super.drag();
     }
     return false;
