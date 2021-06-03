@@ -8,12 +8,21 @@ public abstract class Slider implements Interactable {
   protected float x, y;
   private String label;
   private boolean pressed, hovering;
+  protected boolean on = true;
   
   public Slider(float x, float y, String s) {
     this.x = x;
     this.y = y;
     this.label = s;
     position = w / 2;
+  }
+  
+  public void setX(float n) {
+    this.x = n;
+  }
+  
+  public void setY(float n) {
+    this.y = n;
   }
   
   public void display() {
@@ -168,6 +177,18 @@ public abstract class Slider implements Interactable {
   
   public boolean isChanged() {
     return getPosition() != w / 2;
+  }
+  
+  public void clear() {
+    this.position = w / 2;
+  }
+  
+  public void toggleOn() {
+    on = !on;
+  }
+  
+  public void setOn(boolean b) {
+    this.on = b;
   }
   
   public abstract color apply(color c);

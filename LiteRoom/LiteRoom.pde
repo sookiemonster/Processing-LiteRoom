@@ -6,6 +6,8 @@ ArrayList<WindowObject> right = new ArrayList<WindowObject>(8);
 ArrayList<Interactable> elements = new ArrayList<Interactable>(2);
 ArrayList<Slider> adjustments = new ArrayList<Slider>(2);
 
+HSBContainer HSBObject;
+
 Interactable selectedElement;
 boolean doOnce = false, createZoom = false, toZoom = true;
 int load = 0;
@@ -55,8 +57,10 @@ void draw() {
   frame.display();      
   drawWindowObjects();
   drawElements();
-
+  
+  
   if (currentImage != null) {
+<<<<<<< HEAD
     while ((currentImage.width > 1920-280-280 || currentImage.height > 1054)) {
       currentImage = preview.resize(currentImage);
     }
@@ -64,14 +68,20 @@ void draw() {
     if (load == 1) {
       pSharp = edit.copy();
       s.apply(edit, pSharp);
+=======
+     if (edit == null) {
+      edit = currentImage.copy();
+      edit.loadPixels();
+>>>>>>> main
       load++;
     }
     
-    if (edit == null) {
-      edit = currentImage.copy();
-      edit.loadPixels();
+    if (load == 1 || pSharp == null ) {
+      pSharp = edit.copy();
+      s.apply(edit, pSharp);
       load++;
     }
+    
     
     if (selectedElement != null && frames > updateInterval) {
       frames = 0;
@@ -84,12 +94,13 @@ void draw() {
       } else {
         isSharpening = false;
       }
+      checkPixels();
       edit.loadPixels();
       adjust();
     }
     editPreview = new Display(edit);
   }
-  
+    
   fill(0,0,100);
   textSize(20);
   textAlign(LEFT);
@@ -111,7 +122,8 @@ void setupRight() {
   float rightX = frame.getSideBarWidth() + frame.getWidth() + frame.getPadding();
   right.add(new WindowObject(rightX, frame.getPadding(), 200, "Histogram"));
   right.add(new WindowObject(rightX, 0, 500, "Adjustments"));
-  right.add(new WindowObject(rightX, 0, 100));
+  right.add(new HSBContainer(rightX, 0));
+  HSBObject = (HSBContainer)right.get(right.size() - 1);
 }
 
 // Move Window Objects in relation to each other (subsequent objects are padding px below each other)
@@ -131,7 +143,7 @@ void drawWindowObjects() {
   }
   float rightX = frame.getSideBarWidth() + frame.getWidth() + frame.getPadding(); 
   for (WindowObject w : right) {
-    if (w.getX() != rightX) { // If the window is resized & the right elements aren't in the right position, move them
+    if (w.getX() != rightX) { 
       w.setX(rightX);
     }
     w.display();
@@ -170,9 +182,7 @@ void drawWindowObjects() {
       }
       image(editstate, smallX, smallY);
       image(midstate, preview.canvasX(), preview.canvasY());
-    } else {
-      preview.display();
-    }
+    } 
   }
 }
 
@@ -204,7 +214,7 @@ void drawElements() {
       if (currentImage != null && ((Navigator)n).imgPresent() == false) {
         ((Navigator)n).setImage(currentImage);
       }
-      if (n.isPressed() && doOnce == false) { //<>//
+      if (n.isPressed() && doOnce == false) {
         ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         if (((Navigator)n).title().equals("Clear Image")) {
           currentImage = null;
@@ -213,6 +223,9 @@ void drawElements() {
           editstate = null;
           preview.clear();
           editPreview.clear();
+          pSharp = null;
+          clearAdjustments();
+          
           for (Interactable nav: elements) {
             if (nav instanceof Navigator) {
               ((Navigator)nav).clear();
@@ -243,10 +256,10 @@ void mouseReleased() {
 }
 
 void adjust() {
-  colorMode(RGB, 256, 256, 256);
-  for (int i = 0; i < pSharp.pixels.length; i++) {
+  for (int i = 0; i < edit.pixels.length; i++) {
     if (isSharpening) {
-      edit.pixels[i] =lerpColor(edit.pixels[i], pSharp.pixels[i], sharpen.getDiff());
+      colorMode(RGB, 256, 256, 256);
+      edit.pixels[i] = lerpColor(edit.pixels[i], pSharp.pixels[i], map(sharpen.getDiff(), 0, 2, 0, 1));
     }
     for (Slider n : adjustments) {
       if (n.isChanged()) {
@@ -256,7 +269,7 @@ void adjust() {
       }
     }
   }
-  colorMode(HSB, 360, 100, 100);
+  colorMode(HSB, 360, 100, 100); 
 }
 
 void drawAdjuster() {
@@ -276,12 +289,13 @@ void drawAdjuster() {
   adjustments.add(new SaturationSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   sharpen = (SharpnessSlider)adjustments.get(adjustments.size() - 1);
-  adjustments.add(new HueSlider(right.get(1).getX() + 100, containerY + (counter * spacing), 0)); counter++;
-  adjustments.add(new HueSlider(right.get(1).getX() + 100, containerY + (counter * spacing), 30)); counter++;
-  adjustments.add(new HueSlider(right.get(1).getX() + 100, containerY + (counter * spacing), 60)); counter++;
-
-
-
+  
+  for (Slider[] arr : HSBObject.sliders) {
+    for (Slider n : arr) {
+      adjustments.add(n);
+      elements.add(n);
+    }
+  }
   
   for (Slider n : adjustments) {
     elements.add(n);
@@ -289,4 +303,17 @@ void drawAdjuster() {
   
   w.setHeight((counter - 1) * (adjustments.get(0).getHeight() + spacing) + spacing / 2);
   
+}
+
+void clearAdjustments() {
+  for (Slider n : adjustments) {
+    n.clear();
+  }
+}
+
+void checkPixels() {
+  if (edit.pixels.length != pSharp.pixels.length) {
+    pSharp = edit.copy();
+    s.apply(edit, pSharp);
+  }
 }
