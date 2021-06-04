@@ -58,3 +58,5 @@ Jonathan - Added conditional for checking image size to fix(?) a weird bug on lo
 6/3/21
 
 Jonathan - Fixed and improved the zoom box feature, should work properly now. Created the histogram to show the darkness and lightness value of every pixel in the picture.
+
+Daniel - Added vignette sliders to add vignettes of varying brightness & roundness to the image.
