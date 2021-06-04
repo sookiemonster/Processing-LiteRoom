@@ -96,10 +96,10 @@ void draw() {
     editPreview = new Display(edit);
   }
     
-  fill(0,0,100);
-  textSize(20);
-  textAlign(LEFT);
-  text("FPS: "+ frameRate, 40, 60);
+  //fill(0,0,100);
+  //textSize(20);
+  //textAlign(LEFT);
+  //text("FPS: "+ frameRate, 40, 60);
   
 }
 
