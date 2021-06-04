@@ -100,19 +100,11 @@ void draw() {
     }
     editPreview = new Display(edit);
   }
-<<<<<<< HEAD
 
   //fill(0,0,100);
   //textSize(20);
   //textAlign(LEFT);
   //text("FPS: "+ frameRate, 40, 460);
-=======
-    
-  //fill(0,0,100);
-  //textSize(20);
-  //textAlign(LEFT);
-  //text("FPS: "+ frameRate, 40, 60);
->>>>>>> dBranch
   
 }
 
