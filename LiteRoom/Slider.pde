@@ -168,7 +168,9 @@ public abstract class Slider implements Interactable {
     float nR = r / 255;
     float nG = g / 255;
     float nB = b / 255;
-    return (max(nR, nG, nB) + min(nR, nG, nB)) / 2.0; 
+    float x = (Math.round(((max(nR, nG, nB) + min(nR, nG, nB)) / 2.0) * 10));
+    x = x/10;
+    return x; 
   }
   
   public float getHeight() {
