@@ -25,6 +25,9 @@ PImage pSharp;
 boolean isSharpening = false;
 SharpnessSlider sharpen; 
 
+HashMap<Float, Integer> histogram;
+Histogram colorGraph;
+
 void setup() {
   size(1920, 1080);
   colorMode(HSB, 360, 100, 100); // Set the color mode to Hue (360 degrees), Saturation (0-100), Brightness (0-100)
@@ -94,11 +97,11 @@ void draw() {
     }
     editPreview = new Display(edit);
   }
-    
+
   fill(0,0,100);
   textSize(20);
   textAlign(LEFT);
-  text("FPS: "+ frameRate, 40, 60);
+  text("FPS: "+ frameRate, 40, 460);
   
 }
 
@@ -164,9 +167,6 @@ void drawWindowObjects() {
       }
       for (Interactable nav: elements) {
         if (nav instanceof Navigator) {
-          //if (toZoom == false) {
-          //  toZoom = ((Navigator)nav).falseZoom();
-          //}
           ((Navigator)nav).setZoom(editstate, smallX, smallY, currentImage.width, currentImage.height, toZoom);
           ((Navigator)nav).addEditImage(midstate);
           if (((Navigator)nav).title().equals("Zoom Box")) {
@@ -197,6 +197,17 @@ void fileSelected(File selection) {
           ((Navigator)nav).setImage(currentImage);
         }
       }
+    histogram = new HashMap<Float, Integer>();
+    for (int i = 0; i < currentImage.pixels.length; i++) {
+      float light = lightness(red(currentImage.pixels[i]), blue(currentImage.pixels[i]), green(currentImage.pixels[i]));
+       if (!histogram.containsKey(light)) {
+         histogram.put(light, 1);
+       } else {
+         int count = histogram.get(light);
+         histogram.replace(light, ++count); 
+       }      
+      }
+     colorGraph = new Histogram(histogram, currentImage.pixels.length);
     }
   }
 }
@@ -205,6 +216,11 @@ void fileSelected(File selection) {
 void drawElements() {
   if (selectedElement != null) {
     selectedElement.drag();
+  }
+  if (colorGraph != null) {
+    colorGraph.display();    
+  } else {
+    colorGraph = new Histogram();
   }
   for (Interactable n : elements) {
     if (n instanceof Navigator) {
@@ -222,7 +238,8 @@ void drawElements() {
           editPreview.clear();
           pSharp = null;
           clearAdjustments();
-          
+          histogram.clear();
+          colorGraph.clear();
           for (Interactable nav: elements) {
             if (nav instanceof Navigator) {
               ((Navigator)nav).clear();
@@ -230,7 +247,6 @@ void drawElements() {
           }
         } 
         if (((Navigator)n).title().equals("Reset Zoom")) {
-            //toZoom = false;
             for (Interactable nav: elements) {
               if (nav instanceof Navigator) {
                 ((Navigator)nav).clearZoom();
@@ -257,11 +273,12 @@ void mouseReleased() {
 }
 
 void adjust() {
+  histogram = new HashMap<Float, Integer>();
   for (int i = 0; i < edit.pixels.length; i++) {
     if (isSharpening) {
       colorMode(RGB, 256, 256, 256);
       edit.pixels[i] = lerpColor(edit.pixels[i], pSharp.pixels[i], map(sharpen.getDiff(), 0, 2, 0, 1));
-    }
+    }   
     for (Slider n : adjustments) {
       if (n.isChanged()) {
         if (!(n instanceof SharpnessSlider)) {
@@ -269,8 +286,25 @@ void adjust() {
         }
       }
     }
+    float light = lightness(red(edit.pixels[i]), blue(edit.pixels[i]), green(edit.pixels[i]));
+     if (!histogram.containsKey(light)) {
+       histogram.put(light, 1);
+     } else {
+       int count = histogram.get(light);
+       histogram.replace(light, ++count); 
+     }   
   }
+  colorGraph = new Histogram(histogram, edit.pixels.length);
   colorMode(HSB, 360, 100, 100); 
+}
+
+float lightness(float r, float g, float b) {
+  float nR = r / 255;
+  float nG = g / 255;
+  float nB = b / 255;
+  float x = (Math.round(((max(nR, nG, nB) + min(nR, nG, nB)) / 2.0) * 100));
+  x = x/100;
+  return x; 
 }
 
 void drawAdjuster() {

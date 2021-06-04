@@ -164,13 +164,6 @@ public abstract class Slider implements Interactable {
     }
   }
   
-  public float lightness(float r, float g, float b) {
-    float nR = r / 255;
-    float nG = g / 255;
-    float nB = b / 255;
-    return (max(nR, nG, nB) + min(nR, nG, nB)) / 2.0; 
-  }
-  
   public float getHeight() {
     return this.h + 2;
   }
