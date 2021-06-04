@@ -1,12 +1,11 @@
-public class Navigator implements Interactable { //<>// //<>//
+public class Navigator implements Interactable { //<>// //<>// //<>//
   protected final color primary = color(0, 0, 20);
   private float w = 268, h = 30, padding = 10;
   private int saveCount = 0;
   private float x, y, mouseXCor, mouseYCor, c1, c2, c3, c4, cx1, cx2, cy1, cy2;
   private int resizeW, resizeH;
-  private int adsf = 0;
   private String label;
-  private boolean pressed, hovering, drawZoom, zoomQ;
+  private boolean pressed, hovering, drawZoom;
   private boolean hasImage = false;
   private boolean zooming = false;
   private boolean toggleZoom = false;
@@ -41,7 +40,6 @@ public class Navigator implements Interactable { //<>// //<>//
   }
   
   public void setZoom(PImage img, float x, float y, int resizeW, int resizeH, boolean continueZoom) {
-    zoomQ = continueZoom;
     if (continueZoom) {
       zoomImage = img;
       this.resizeW = resizeW;
