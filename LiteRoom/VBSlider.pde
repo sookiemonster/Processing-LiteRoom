@@ -21,19 +21,23 @@ public class VBSlider extends Slider {
     return c;
   }
   
-  public color apply(int i, color c, int imgWidth, int imgHeight) {
+  public color apply(int i, color c, int imgWidth, int imgHeight, float roundness) {
     colorMode(RGB, 256, 256, 256);
-    int x = pixelsToX(i, imgWidth);
-    int y = pixelsToY(i, imgWidth);
+    float x = pixelsToX(i, imgWidth);
+    float y = pixelsToY(i, imgWidth);
     
-    float brighten = map(distSquared(x, y, imgHeight/2, imgWidth/2), 0, min(imgHeight/2, imgWidth/2) * min(imgHeight/2, imgWidth/2), 0, 1) * diff + 1; 
+    float cX = imgHeight / 2.0;
+    float cY = imgWidth / 2.0;
+    
+    float a = imgHeight / 2.0;
+    float b = lerp(imgWidth / 2.0 + imgWidth / 5.0, imgHeight / 2.0, roundness);
+    
+    float dist = (((x - cX) * (x - cX)) / (a * a)) + (((y - cY) * (y - cY)) / (b * b));
+    float brighten = diff * dist + 1;
     
     return color(red(c) * brighten, green(c) * brighten, blue(c) * brighten);
   }
-  
-  private float distSquared(float x1, float y1, float x2, float y2) {
-    return ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1));
-  }
+ 
   
   private int pixelsToX(int i, int imgWidth) {
     return i / imgWidth;

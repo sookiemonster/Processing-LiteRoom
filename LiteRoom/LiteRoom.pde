@@ -26,6 +26,8 @@ PImage pSharp;
 boolean isSharpening = false;
 SharpnessSlider sharpen; 
 
+VRSlider round;
+
 void setup() {
   size(1920, 1080);
   colorMode(HSB, 360, 100, 100); // Set the color mode to Hue (360 degrees), Saturation (0-100), Brightness (0-100)
@@ -271,7 +273,7 @@ void adjust() {
       if (n.isChanged()) {
         if (n instanceof VBSlider) {
           VBSlider b = (VBSlider)n;
-          edit.pixels[i] = b.apply(i, edit.pixels[i], edit.width, edit.height);
+          edit.pixels[i] = b.apply(i, edit.pixels[i], edit.width, edit.height, round.getRoundness());
         } else if (!(n instanceof SharpnessSlider)) {
           edit.pixels[i] = n.apply(edit.pixels[i]);
         } 
@@ -307,6 +309,9 @@ void drawAdjuster() {
   
   for (Slider n : VignetteObject.sliders) {
     adjustments.add(n);
+    if (n instanceof VRSlider) {
+      round = (VRSlider)n;
+    }
   }
   
   for (Slider n : adjustments) {
