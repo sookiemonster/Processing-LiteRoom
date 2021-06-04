@@ -79,4 +79,8 @@ public class WindowObject extends Window {
   public void setY(float n) {
     y = n;
   }
+  
+  public boolean inRect(float px, float py, float x1, float y1, float x2, float y2) {
+    return (px >= x1 && py >= y1 && px <= x2 && py <= y2);
+  }
 }

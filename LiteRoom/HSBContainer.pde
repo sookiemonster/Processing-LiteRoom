@@ -65,10 +65,6 @@ public class HSBContainer extends WindowObject {
     }
   }
   
-  private boolean inRect(float px, float py, float x1, float y1, float x2, float y2) {
-    return (px >= x1 && py >= y1 && px <= x2 && py <= y2);
-  }
-  
   private void switchSelected() {
     for (int i = 0; i < sliders.size(); i++) {
       for (Slider n : sliders.get(i)) {
