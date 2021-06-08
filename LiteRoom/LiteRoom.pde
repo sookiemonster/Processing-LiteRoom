@@ -288,9 +288,10 @@ void drawAdjuster() {
   float containerY = w.getInteriorY();
   
   int spacing = 30;
-  int counter = 0;
+  float counter = 0;
    
   adjustments.add(new BrightnessSlider(right.get(1).getX() + 100, containerY)); counter++;
+  adjustments.add(new ContrastSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new TemperatureSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new TintSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Highlights", 0.9, 1)); counter++;
@@ -298,7 +299,7 @@ void drawAdjuster() {
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Shadows", 0.25, .5)); counter++;
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Blacks", 0.0, .25)); counter++;
   adjustments.add(new SaturationSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
-  adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
+  adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter+=.2;
   sharpen = (SharpnessSlider)adjustments.get(adjustments.size() - 1);
    
   for (Slider[] arr : HSBObject.sliders) {
