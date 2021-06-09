@@ -193,5 +193,4 @@ public abstract class Slider implements Interactable {
   
   public abstract color apply(color c);
   
-  //public abstract color apply(color c, float weight);
 }

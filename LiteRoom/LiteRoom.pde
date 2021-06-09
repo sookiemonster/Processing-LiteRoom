@@ -110,8 +110,6 @@ void draw() {
 void setupLeft() {
   float padding = frame.getPadding();
   left.add(new WindowObject(padding, padding, 200));
-  left.add(new WindowObject(padding, 0, 100));
-  left.add(new WindowObject(padding, 0, 100));
 }
 
 // Create Window Objects on the right side
