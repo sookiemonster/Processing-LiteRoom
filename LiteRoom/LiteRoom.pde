@@ -244,7 +244,7 @@ void drawElements() {
           }
           createZoom = false;
         doOnce = true;
-      }  //<>//
+      }  //<>// //<>//
     }
    if (selectedElement == null && currentImage != null && n.drag()) {
       selectedElement = n;
@@ -252,7 +252,7 @@ void drawElements() {
   n.display(); 
   }  
 }
- //<>//
+ //<>// //<>//
 void mouseReleased() {
   for (Interactable n : elements) {
     n.clearMouse();
@@ -297,6 +297,7 @@ void drawAdjuster() {
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Shadows", 0.25, .5)); counter++;
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Blacks", 0.0, .25)); counter++;
   adjustments.add(new SaturationSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
+  adjustments.add(new VibranceSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter+=.2;
   sharpen = (SharpnessSlider)adjustments.get(adjustments.size() - 1);
    
