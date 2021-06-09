@@ -63,4 +63,8 @@ Daniel - Added vignette sliders to add vignettes of varying brightness & roundne
 
 6/7/2021 
 
-Daniel - Added constrast slider,
+Daniel - Added constrast slider.
+
+6/8/2021 
+
+Daniel - Added vibrance slider. Scrapped radial filter & graduated filter ideas.
