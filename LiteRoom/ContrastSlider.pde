@@ -12,13 +12,14 @@ public class ContrastSlider extends Slider {
     super.display();
   }
   
+  public void update() {
+    float diff = this.getPosition() - w/2.0;
+    factor = (259.0 * (diff + 255.0)) / (255.0 * (259.0 - diff));
+  }
+  
   public boolean drag() {
-    if (on) {
-      float diff = this.getPosition() - w/2.0;
-      factor = (259.0 * (diff + 255.0)) / (255.0 * (259.0 - diff));
-      return super.drag();
-    }
-    return false;
+    update();
+    return super.drag();
   }
   
   public color apply(color c) {

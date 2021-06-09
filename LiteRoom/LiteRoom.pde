@@ -17,7 +17,8 @@ PImage currentImage, edit, midstate, editstate;
 Display preview, editPreview;
 
 int frames = 0;
-final int updateInterval = 2; 
+boolean changed = false;
+final int updateInterval = 1; 
 
 Kernel s = new Kernel(new float[][] {{0, -1, 0},
                                      {-1, 3, 1},
@@ -80,7 +81,7 @@ void draw() {
     }
     
     
-    if (selectedElement != null && frames > updateInterval) {
+    if (changed || (selectedElement != null && frames > updateInterval)) {
       frames = 0;
       edit = currentImage.copy();
       if (sharpen.getDiff() < 0) {
@@ -94,6 +95,7 @@ void draw() {
       checkPixels();
       edit.loadPixels();
       adjust();
+      changed = false;
     }
     editPreview = new Display(edit);
   }
@@ -244,7 +246,7 @@ void drawElements() {
           }
           createZoom = false;
         doOnce = true;
-      }  //<>// //<>//
+      }  //<>//
     }
    if (selectedElement == null && currentImage != null && n.drag()) {
       selectedElement = n;
@@ -252,7 +254,23 @@ void drawElements() {
   n.display(); 
   }  
 }
- //<>// //<>//
+
+public void mouseClicked(MouseEvent evt) {
+  if (evt.getCount() == 2) {
+    doubleClicked();
+  }
+}
+
+void doubleClicked() {
+  for (Slider n : adjustments) {
+    if (n.onSlider(mouseX, mouseY)) {
+      n.clear();
+      n.update();
+    }
+  }
+  changed = true;
+}
+ //<>//
 void mouseReleased() {
   for (Interactable n : elements) {
     n.clearMouse();

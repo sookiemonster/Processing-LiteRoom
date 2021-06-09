@@ -12,8 +12,12 @@ public class VRSlider extends Slider {
     super.display();
   }
   
-  public boolean drag() {
+  public void update() {
     diff = map(this.getPosition(), 0, w, 0, 1);
+  }
+  
+  public boolean drag() {
+    update();
     return super.drag();
   }
   

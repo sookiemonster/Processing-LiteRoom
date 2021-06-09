@@ -24,9 +24,13 @@ public class HBSlider extends Slider {
     }
   }
   
+  public void update() {
+    diff = (this.getPosition() - 75.0) / w;
+  }
+  
   public boolean drag() {
     if (on) {
-      diff = (this.getPosition() - 75.0) / w;
+      update();
       return super.drag();
     }
     return false;

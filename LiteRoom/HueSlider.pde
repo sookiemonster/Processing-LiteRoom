@@ -25,9 +25,13 @@ public class HueSlider extends Slider {
     }
   }
   
+  public void update() {
+    hueDiff = map(this.getPosition() - 75.0, -75, 75, -1 * change, change);
+  }
+  
   public boolean drag() {
     if (on) {
-      hueDiff = map(this.getPosition() - 75.0, -75, 75, -1 * change, change);
+      update();
       return super.drag();
     }
     return false;

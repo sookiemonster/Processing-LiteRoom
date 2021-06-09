@@ -12,8 +12,12 @@ public class VibranceSlider extends Slider {
     super.display();
   }
   
-  public boolean drag() {
+  public void update() {
     vibDiff = (this.getPosition() - 75.0) / 4;
+  }
+  
+  public boolean drag() {
+    update();
     return super.drag();
   }
   

@@ -12,8 +12,12 @@ public class SaturationSlider extends Slider {
     super.display();
   }
   
-  public boolean drag() {
+  public void update() {
     satDiff = (this.getPosition() - 75.0);
+  }
+  
+  public boolean drag() {
+    update();
     return super.drag();
   }
   

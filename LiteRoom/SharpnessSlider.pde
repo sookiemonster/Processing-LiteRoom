@@ -9,7 +9,10 @@ public class SharpnessSlider extends Slider {
   
   public SharpnessSlider(float x, float y, int[] pInitial, int[] pBlur, int[] pSharp) {
     super(x, y, "Sharpness");
+  }
 
+  public void update() {
+    sharpDiff = map(this.getPosition() - 75, -75, 75, -2, 2);
   }
   
   public void display() {
@@ -18,7 +21,7 @@ public class SharpnessSlider extends Slider {
   }
   
   public boolean drag() {
-    sharpDiff = map(this.getPosition() - 75, -75, 75, -2, 2);
+    update();
     return super.drag();
   }
   
