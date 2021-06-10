@@ -109,7 +109,7 @@ public abstract class Slider implements Interactable {
   }
   
   public boolean onSlider(float pX, float pY) {
-    return inRect(pX, pY, x, y, x + w, y + h + 3);
+    return inRect(pX, pY, x - 3, y, x + w + 3, y + h + 3);
   }
    
   public void clearMouse() {
