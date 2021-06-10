@@ -85,6 +85,10 @@ void draw() {
     
     
     if (changed || (selectedElement != null && frames > updateInterval)) {
+      for (Slider n : adjustments) {
+        n.update();
+      }
+      
       frames = 0;
       edit = currentImage.copy();
       if (sharpen.getDiff() < 0) {
