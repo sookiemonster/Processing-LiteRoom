@@ -218,7 +218,7 @@ void fileSelected(File selection) {
          histogram.replace(light, ++count); 
        }      
       }
-     colorGraph = new Histogram(histogram, currentImage.pixels.length);
+     colorGraph = new Histogram(histogram);
     }
   }
 }
@@ -262,7 +262,7 @@ void drawElements() {
               if (nav instanceof Navigator) {
                 ((Navigator)nav).clearZoom();
               }
-            }
+            } //<>//
           }
           createZoom = false;
         doOnce = true;
@@ -270,7 +270,7 @@ void drawElements() {
     }
    if (selectedElement == null && currentImage != null && n.drag()) {
       selectedElement = n;
-      changed = true;
+      changed = true; //<>//
     }
   n.display(); 
   }  
@@ -325,7 +325,7 @@ void adjust() {
        histogram.replace(light, ++count); 
      }   
   }
-  colorGraph = new Histogram(histogram, edit.pixels.length);
+  colorGraph = new Histogram(histogram);
   colorMode(HSB, 360, 100, 100); 
 }
 
