@@ -13,7 +13,7 @@ Interactable selectedElement;
 boolean doOnce = false, createZoom = false, toZoom = true;
 int load = 0;
 
-PImage currentImage, edit, midstate, editstate;
+PImage currentImage, edit, midstate, editstate, save;
 Display preview, editPreview;
 
 int frames = 0;
@@ -40,7 +40,7 @@ void setup() {
   
   elements.add(new Navigator(frame.getPadding(), 966, "Load Image", currentImage));
   elements.add(new Navigator(frame.getPadding(), 1005, "Save Image", currentImage));
-  elements.add(new Navigator(1920 - 288 + frame.getPadding(), 1005, "Clear Image"));
+  elements.add(new Navigator(1920 - frame.getSideBarWidth() + frame.getPadding(), 1005, "Clear Image"));
   elements.add(new Navigator(11, 11, 267, 199, "Zoom Box"));
   elements.add(new Navigator(frame.getPadding(), 888, "Reset Zoom"));
   
@@ -67,7 +67,7 @@ void draw() {
   
   
   if (currentImage != null) {
-    if ((currentImage.height > 1054) || (currentImage.width > 1920-288-288)) {
+    if ((currentImage.height > 1054) || (currentImage.width > 1920 - (2 * frame.getSideBarWidth()))) {
       currentImage = preview.resize(currentImage);
     }
     
@@ -106,11 +106,6 @@ void draw() {
     }
     editPreview = new Display(edit);
   }
-
-  //fill(0,0,100);
-  //textSize(20);
-  //textAlign(LEFT);
-  //text("FPS: "+ frameRate, 40, 460);
   
 }
 
@@ -242,6 +237,7 @@ void drawElements() {
         ((Navigator)n).buttonFunction(((Navigator)n).title(), currentImage);
         if (((Navigator)n).title().equals("Clear Image")) {
           currentImage = null;
+          save = null;
           edit = null;
           midstate = null;
           editstate = null;
@@ -327,6 +323,38 @@ void adjust() {
   }
   colorGraph = new Histogram(histogram);
   colorMode(HSB, 360, 100, 100); 
+}
+
+PImage adjustImage(PImage p) {
+  PImage img = p.copy();
+  PImage imgSharp = img.copy();
+  img.loadPixels();
+  
+  if (isSharpening) {
+    s.apply(img, imgSharp);
+  } else if (sharpen.getDiff() < 0) {
+    img.filter(BLUR, map(abs(sharpen.getDiff()), 0, 2, 0, max(img.width / 1344, img.height / 1054)  + 2));
+  }
+   
+  for (int i = 0; i < img.pixels.length; i++) {
+    if (isSharpening) {
+      colorMode(RGB, 256, 256, 256);
+      img.pixels[i] = lerpColor(img.pixels[i], imgSharp.pixels[i], map(sharpen.getDiff(), 0, 2, 0, 1));
+    }   
+    for (Slider n : adjustments) {
+      if (n.isChanged()) {
+        if (n instanceof VBSlider) {
+          VBSlider b = (VBSlider)n;
+          img.pixels[i] = b.apply(i, img.pixels[i], img.width, img.height, round.getRoundness());
+        } else if (!(n instanceof SharpnessSlider)) {
+          img.pixels[i] = n.apply(img.pixels[i]);
+        } 
+      }
+    }
+  }
+  colorMode(HSB, 360, 100, 100);
+  
+  return img;
 }
 
 float lightness(float r, float g, float b) {

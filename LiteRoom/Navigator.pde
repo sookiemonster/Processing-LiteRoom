@@ -1,4 +1,4 @@
-public class Navigator implements Interactable { //<>// //<>// //<>// //<>//
+public class Navigator implements Interactable { //<>// //<>// //<>// //<>// //<>//
   protected final color primary = color(0, 0, 20);
   private float w = 268, h = 30, padding = 10;
   private int saveCount = 0;
@@ -36,6 +36,9 @@ public class Navigator implements Interactable { //<>// //<>// //<>// //<>//
   
   public void setImage(PImage img) {
     currentImage = img;
+    if (save == null) {
+      save = img.copy();
+    }
     hasImage = true;
   }
   
@@ -209,16 +212,11 @@ public class Navigator implements Interactable { //<>// //<>// //<>// //<>//
     return hasImage;
   }
   
-  public void storeImage(PImage img) {
-    currentImage = img;
-    hasImage = true;
-  }
-  
   public void buttonFunction(String s, PImage img) {
     if (s.equals("Load Image")) {
       selectImage(img);
     } else if (s.equals("Save Image")) {
-      saveImage(img);
+      saveImage();
     } else if (s.equals("Clear Image")) {
       zooming = false;
       toggleZoom = false;
@@ -247,11 +245,9 @@ public class Navigator implements Interactable { //<>// //<>// //<>// //<>//
     }
   }
   
-  public void saveImage(PImage image) {
+  public void saveImage() {
     if (currentImage != null) {
-      int newX = (1344 - img.width)/2;
-      int newY = (1054 - img.height)/2;
-      PImage temp = get(288 + newX, 0 + newY, image.width, image.height);
+      PImage temp = adjustImage(save);
       temp.save("image" + incSave() +".png");
     }
   }
