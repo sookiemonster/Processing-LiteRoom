@@ -68,3 +68,7 @@ Daniel - Added constrast slider.
 6/8/2021 
 
 Daniel - Added vibrance slider. Scrapped radial filter & graduated filter ideas.
+
+6/9/2021
+
+Daniel - Added slider reset option. Fixed bugs where clicking the slider didn't update its adjustment correctly, and the preview wouldn't properly reflect changes made to the slider.
