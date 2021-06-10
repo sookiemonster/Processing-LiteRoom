@@ -12,8 +12,12 @@ public class TemperatureSlider extends Slider {
     super.display();
   }
   
-  public boolean drag() {
+  public void update() {
     tempDiff = this.getPosition() - 75;
+  }
+  
+  public boolean drag() {
+    update();
     return super.drag();
   }
   

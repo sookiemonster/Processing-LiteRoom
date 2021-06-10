@@ -15,8 +15,12 @@ public class LightnessSlider extends Slider {
     super.display();
   }
   
-  public boolean drag() {
+  public void update() {
     lightnessFactor = (this.getPosition() - 75.0) / (4 * w) + 1;
+  }
+  
+  public boolean drag() {
+    update();
     return super.drag();
   }
   

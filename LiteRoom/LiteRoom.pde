@@ -17,7 +17,8 @@ PImage currentImage, edit, midstate, editstate;
 Display preview, editPreview;
 
 int frames = 0;
-final int updateInterval = 2; 
+boolean changed = false;
+final int updateInterval = 1; 
 
 Kernel s = new Kernel(new float[][] {{0, -1, 0},
                                      {-1, 3, 1},
@@ -83,7 +84,7 @@ void draw() {
     }
     
     
-    if (selectedElement != null && frames > updateInterval) {
+    if (changed || (selectedElement != null && frames > updateInterval)) {
       frames = 0;
       edit = currentImage.copy();
       if (sharpen.getDiff() < 0) {
@@ -97,6 +98,7 @@ void draw() {
       checkPixels();
       edit.loadPixels();
       adjust();
+      changed = false;
     }
     editPreview = new Display(edit);
   }
@@ -113,8 +115,6 @@ void draw() {
 void setupLeft() {
   float padding = frame.getPadding();
   left.add(new WindowObject(padding, padding, 200));
-  left.add(new WindowObject(padding, 0, 100));
-  left.add(new WindowObject(padding, 0, 100));
 }
 
 // Create Window Objects on the right side
@@ -262,13 +262,30 @@ void drawElements() {
           }
           createZoom = false;
         doOnce = true;
-      }  //<>//
+      }   //<>//
     }
    if (selectedElement == null && currentImage != null && n.drag()) {
       selectedElement = n;
+      changed = true;
     }
   n.display(); 
   }  
+}
+
+public void mouseClicked(MouseEvent evt) {
+  if (evt.getCount() == 2) {
+    doubleClicked();
+  }
+}
+
+void doubleClicked() {
+  for (Slider n : adjustments) {
+    if (n.onSlider(mouseX, mouseY)) {
+      n.clear();
+      n.update();
+    }
+  }
+  changed = true;
 }
  //<>//
 void mouseReleased() {
@@ -322,9 +339,10 @@ void drawAdjuster() {
   float containerY = w.getInteriorY();
   
   int spacing = 30;
-  int counter = 0;
+  float counter = 0;
    
   adjustments.add(new BrightnessSlider(right.get(1).getX() + 100, containerY)); counter++;
+  adjustments.add(new ContrastSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new TemperatureSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new TintSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Highlights", 0.9, 1)); counter++;
@@ -332,7 +350,8 @@ void drawAdjuster() {
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Shadows", 0.25, .5)); counter++;
   adjustments.add(new LightnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing), "Blacks", 0.0, .25)); counter++;
   adjustments.add(new SaturationSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
-  adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
+  adjustments.add(new VibranceSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter++;
+  adjustments.add(new SharpnessSlider(right.get(1).getX() + 100, containerY + (counter * spacing))); counter+=.2;
   sharpen = (SharpnessSlider)adjustments.get(adjustments.size() - 1);
    
   for (Slider[] arr : HSBObject.sliders) {

@@ -12,8 +12,12 @@ public class TintSlider extends Slider {
     super.display();
   }
   
-  public boolean drag() {
+  public void update() {
     tintDiff = this.getPosition() - 75;
+  }
+  
+  public boolean drag() {
+    update();
     return super.drag();
   }
   

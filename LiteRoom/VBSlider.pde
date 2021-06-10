@@ -12,8 +12,12 @@ public class VBSlider extends Slider {
     super.display();
   }
   
-  public boolean drag() {
+  public void update() {
     diff = (this.getPosition() - 75.0) / w;
+  }
+  
+  public boolean drag() {
+    update();
     return super.drag();
   }
   

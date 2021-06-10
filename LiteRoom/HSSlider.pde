@@ -26,9 +26,13 @@ public class HSSlider extends Slider {
     }
   }
   
+  public void update() {
+    satDiff = this.getPosition() - 75.0;
+  }
+  
   public boolean drag() {
     if (on) {
-      satDiff = this.getPosition() - 75.0;
+      update();
       return super.drag();
     }
     return false;
