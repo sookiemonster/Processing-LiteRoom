@@ -246,10 +246,11 @@ void drawElements() {
           }
           createZoom = false;
         doOnce = true;
-      }  //<>//
+      }   //<>//
     }
    if (selectedElement == null && currentImage != null && n.drag()) {
       selectedElement = n;
+      changed = true;
     }
   n.display(); 
   }  
