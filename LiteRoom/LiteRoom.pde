@@ -28,6 +28,9 @@ boolean isSharpening = false;
 SharpnessSlider sharpen; 
 
 HashMap<Float, Integer> histogram;
+HashMap<Float, Integer> reds;
+HashMap<Float, Integer> blues;
+HashMap<Float, Integer> greens;
 Histogram colorGraph;
 
 VRSlider round;
@@ -166,11 +169,6 @@ void drawWindowObjects() {
       }
       float smallX = 11 + ((267 - editstate.width)/2);
       float smallY = 11 + ((199 - editstate.height)/2);
-          for (Interactable nav: elements) {
-        if (nav instanceof Navigator) {
-          
-        }
-      }
       for (Interactable nav: elements) {
         if (nav instanceof Navigator) {
           ((Navigator)nav).setZoom(editstate, smallX, smallY, currentImage.width, currentImage.height, toZoom);
@@ -204,18 +202,60 @@ void fileSelected(File selection) {
         }
       }
     histogram = new HashMap<Float, Integer>();
+    reds = new HashMap<Float, Integer>();
+    blues = new HashMap<Float, Integer>();
+    greens = new HashMap<Float, Integer>();
     for (int i = 0; i < currentImage.pixels.length; i++) {
-      float light = lightness(red(currentImage.pixels[i]), blue(currentImage.pixels[i]), green(currentImage.pixels[i]));
-       if (!histogram.containsKey(light)) {
+      float red = red(currentImage.pixels[i]);
+      float blue = blue(currentImage.pixels[i]);
+      float green = green(currentImage.pixels[i]);
+      float light = lightness(red, green, blue);
+      if (!histogram.containsKey(light)) {
          histogram.put(light, 1);
        } else {
          int count = histogram.get(light);
          histogram.replace(light, ++count); 
-       }      
+       }    
+      if (!reds.containsKey(convertRed(red))) {
+         reds.put(convertRed(red), 1);
+       } else {
+         int count = reds.get(convertRed(red));
+         reds.replace(convertRed(red), ++count); 
+       }
+      if (!blues.containsKey(convertBlue(blue))) {
+         blues.put(convertBlue(blue), 1);
+       } else {
+         int count = blues.get(convertBlue(blue));
+         blues.replace(convertBlue(blue), ++count); 
+       }
+      if (!greens.containsKey(convertGreen(green))) {
+         greens.put(convertGreen(green), 1);
+       } else {
+         int count = greens.get(convertGreen(green));
+         greens.replace(convertGreen(green), ++count); 
+       }
       }
-     colorGraph = new Histogram(histogram);
+     colorGraph = new Histogram(histogram, reds, blues, greens);
     }
   }
+}
+
+float convertRed(float r) {
+  float convert = Math.round(((r % 255) / 255) * 100);
+  convert = convert / 100;
+  return convert;
+}
+
+float convertBlue(float b) {
+  float convert = Math.round(((b % 255) / 255) * 100);
+  convert = convert / 100;
+  return convert;
+}
+
+float convertGreen(float g) {
+  float convert = Math.round(((g % 255) / 255) * 100);
+  convert = convert / 100;
+  return convert;
 }
 
 // Draws all elements. If an element is being dragged, no other elements will be dragged.
@@ -246,6 +286,8 @@ void drawElements() {
           pSharp = null;
           clearAdjustments();
           histogram.clear();
+          reds.clear();
+          blues.clear();
           colorGraph.clear();
           for (Interactable nav: elements) {
             if (nav instanceof Navigator) {
@@ -298,6 +340,9 @@ void mouseReleased() {
 
 void adjust() {
   histogram = new HashMap<Float, Integer>();
+  reds = new HashMap<Float, Integer>();
+  blues = new HashMap<Float, Integer>();
+  greens = new HashMap<Float, Integer>();
   for (int i = 0; i < edit.pixels.length; i++) {
     if (isSharpening) {
       colorMode(RGB, 256, 256, 256);
@@ -313,15 +358,36 @@ void adjust() {
         } 
       }
     }
-    float light = lightness(red(edit.pixels[i]), blue(edit.pixels[i]), green(edit.pixels[i]));
+    float red = red(edit.pixels[i]);
+    float blue = blue(edit.pixels[i]);
+    float green = green(edit.pixels[i]);
+    float light = lightness(red, blue, green);
      if (!histogram.containsKey(light)) {
        histogram.put(light, 1);
      } else {
        int count = histogram.get(light);
        histogram.replace(light, ++count); 
      }   
+    if (!reds.containsKey(convertRed(red))) {
+       reds.put(convertRed(red), 1);
+     } else {
+       int count = reds.get(convertRed(red));
+       reds.replace(convertRed(red), ++count); 
+     }
+    if (!blues.containsKey(convertBlue(blue))) {
+         blues.put(convertBlue(blue), 1);
+     } else {
+       int count = blues.get(convertBlue(blue));
+       blues.replace(convertBlue(blue), ++count); 
+     }
+     if (!greens.containsKey(convertGreen(green))) {
+       greens.put(convertGreen(green), 1);
+     } else {
+       int count = greens.get(convertGreen(green));
+       greens.replace(convertGreen(green), ++count); 
+     }
   }
-  colorGraph = new Histogram(histogram);
+  colorGraph = new Histogram(histogram, reds, blues, greens);
   colorMode(HSB, 360, 100, 100); 
 }
 
