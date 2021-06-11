@@ -66,7 +66,9 @@ Daniel - Added vignette sliders to add vignettes of varying brightness & roundne
 
 6/7/2021 
 
-Daniel - Added constrast slider.
+Daniel - Added constrast slider.  
+
+Jonathan - Scrapped the ideas for different aspect ratios and clipping in histogram.
 
 6/8/2021 
 
