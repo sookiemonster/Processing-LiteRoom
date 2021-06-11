@@ -76,4 +76,4 @@ Daniel - Added vibrance slider. Scrapped radial filter & graduated filter ideas.
 
 Daniel - Added slider reset option. Fixed bugs where clicking the slider didn't update its adjustment correctly, and the preview wouldn't properly reflect changes made to the slider.
 
-Jonathan - Fixed implementation of histogram to be more accurate and better.
+Jonathan - Fixed implementation of histogram to be more accurate and better. I also made the RGB channels for the histogram.
