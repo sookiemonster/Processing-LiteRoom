@@ -1,6 +1,8 @@
 # Processing-LiteRoom
 LiteRoom (our version of Adobe’s Lightroom) is an image editing program that’s useful for color correction and color grading. Within the program there will be sliders that can be used to adjust certain aspects of the image, as well as a graph representing data from the image.
 
+See our [design document](https://docs.google.com/document/d/1loHmnPx4b_RIys0d_C-07HIXoZBVQuqASQAtE_pxfTs/edit?usp=sharing) for more information.
+
 ### Developers
 Daniel Sooknanan & Jonathan Wu
 
